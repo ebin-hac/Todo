@@ -1,81 +1,114 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap");
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Orbitron', sans-serif;
 }
 
 body {
-  background: #0d0d0d;
-  color: #fff;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at top left, #121212, #0a0a0a);
+  color: #eaeaea;
   min-height: 100vh;
+  padding: 2rem 1rem;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 2rem;
-}
-
-.container {
-  width: 100%;
-  max-width: 900px;
-  background: #1c1c1c;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 0 20px #00ffe7, 0 0 40px #ff00ff;
-}
-
-header h1 {
-  font-size: 2rem;
-  background: linear-gradient(90deg, #ff00ff, #00ffe7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 0.3rem;
-}
-
-header p {
-  color: #ccc;
-  margin-bottom: 2rem;
-}
-
-.month {
-  background: #2a2a2a;
-  margin-bottom: 1rem;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 10px #ff00ff50, 0 0 20px #00ffe750;
-}
-
-.month-header {
-  padding: 1rem;
-  cursor: pointer;
-  background: linear-gradient(90deg, #ff00ff, #00ffe7);
-  color: #000;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
 }
 
-.month-header span {
-  font-size: 0.9rem;
-  color: #fff;
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.8rem;
+  background: linear-gradient(90deg, #00ffe7, #ff00ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
+}
+
+header p {
+  color: #bbb;
+  margin-top: 0.3rem;
+  font-size: 0.95rem;
+}
+
+main {
+  width: 100%;
+  max-width: 850px;
+}
+
+.month {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);
+  transition: transform 0.25s ease;
+}
+
+.month:hover {
+  transform: scale(1.01);
+}
+
+.month-header {
+  padding: 1rem 1.2rem;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.month-header i {
+  color: #00ffe7;
 }
 
 .tasks {
   display: none;
-  padding: 1rem;
+  padding: 1.2rem 1.5rem;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.85rem;
+  color: #00ffe7;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .task-item {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1c1c1c;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
+  transition: 0.25s ease;
+}
+
+.task-item:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .task-item.completed span {
@@ -86,21 +119,39 @@ header p {
 .task-item input[type="checkbox"] {
   margin-right: 1rem;
   transform: scale(1.2);
-  accent-color: #ff00ff;
+  accent-color: #00ffe7;
+}
+
+.progress-container {
+  margin-top: 1rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
 }
 
 .progress-bar {
   width: 100%;
-  background: #333;
-  height: 15px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  margin-top: 0.5rem;
 }
 
 .progress-fill {
   height: 100%;
-  width: 0;
+  width: 0%;
   background: linear-gradient(90deg, #00ffe7, #ff00ff);
-  transition: width 0.3s;
+  transition: width 0.4s ease;
+}
+
+footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #999;
 }
