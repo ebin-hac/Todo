@@ -1,5 +1,4 @@
- // Save progress in LocalStorage
-document.querySelectorAll('.month').forEach((month, index) => {
+ document.querySelectorAll('.month').forEach((month, index) => {
   const checkboxes = month.querySelectorAll('input[type="checkbox"]');
   const progressFill = month.querySelector('.progress-fill');
   const key = `month${index + 1}_progress`;
@@ -21,4 +20,4 @@ document.querySelectorAll('.month').forEach((month, index) => {
 
   checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
   updateProgress();
-}); 
+});
