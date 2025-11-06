@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
 
 * {
   margin: 0;
@@ -8,13 +8,13 @@
 
 body {
   font-family: "Poppins", sans-serif;
-  background: radial-gradient(circle at top left, #121212, #0a0a0a);
+  background: radial-gradient(circle at top left, #0a0a0a, #111);
   color: #eaeaea;
   min-height: 100vh;
-  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 2rem 1rem;
 }
 
 header {
@@ -23,7 +23,7 @@ header {
 }
 
 header h1 {
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   background: linear-gradient(90deg, #00ffe7, #ff00ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -31,79 +31,76 @@ header h1 {
 }
 
 header p {
-  color: #bbb;
-  margin-top: 0.3rem;
-  font-size: 0.95rem;
+  color: #aaa;
+  font-size: 1rem;
 }
 
 main {
   width: 100%;
-  max-width: 850px;
+  max-width: 900px;
 }
 
 .month {
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
   margin-bottom: 1.5rem;
   overflow: hidden;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.05);
-  transition: transform 0.25s ease;
-}
-
-.month:hover {
-  transform: scale(1.01);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.05);
 }
 
 .month-header {
-  padding: 1rem 1.2rem;
   background: rgba(255, 255, 255, 0.08);
-  cursor: pointer;
+  padding: 1rem 1.2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
   font-weight: 600;
+  transition: 0.3s;
 }
 
-.month-header i {
-  color: #00ffe7;
+.month-header:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .tasks {
   display: none;
-  padding: 1.2rem 1.5rem;
+  padding: 1rem 1.2rem 1.5rem;
   animation: fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.week {
+  margin-top: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.category {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.85rem;
+.week-header {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.7rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1rem;
   color: #00ffe7;
-  text-transform: uppercase;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
+}
+
+.week-content {
+  display: none;
+  padding: 0.7rem 1rem 1rem;
 }
 
 .task-item {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  padding: 0.8rem 1rem;
+  padding: 0.6rem 0.9rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
   transition: 0.25s ease;
 }
 
@@ -116,10 +113,10 @@ main {
   opacity: 0.6;
 }
 
-.task-item input[type="checkbox"] {
-  margin-right: 1rem;
-  transform: scale(1.2);
+input[type="checkbox"] {
   accent-color: #00ffe7;
+  transform: scale(1.2);
+  margin-right: 0.8rem;
 }
 
 .progress-container {
@@ -129,14 +126,13 @@ main {
 .progress-info {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.3rem;
   font-size: 0.9rem;
+  margin-bottom: 0.3rem;
 }
 
 .progress-bar {
   width: 100%;
-  height: 12px;
+  height: 10px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   overflow: hidden;
@@ -146,12 +142,17 @@ main {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #00ffe7, #ff00ff);
-  transition: width 0.4s ease;
+  transition: width 0.3s ease;
 }
 
 footer {
   text-align: center;
   margin-top: 2rem;
-  font-size: 0.85rem;
   color: #999;
+  font-size: 0.85rem;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+  }
