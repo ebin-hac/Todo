@@ -6,7 +6,6 @@
 <title>Full Stack + DSA Roadmap</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* Dark Neon Theme */
   body {
     margin: 0;
     font-family: 'JetBrains Mono', monospace;
@@ -14,27 +13,26 @@
     color: #fff;
   }
 
-  h1, h2, h3 {
+  h1, h2 {
     color: #00ffea;
     text-shadow: 0 0 8px #00ffea;
   }
 
   h1 { text-align: center; margin-top: 20px; }
-  h2 { margin-top: 40px; border-bottom: 1px solid #00ffea; padding-bottom: 5px; }
+  h2 { margin-top: 30px; border-bottom: 1px solid #00ffea; padding-bottom: 5px; }
 
-  .month {
+  .tracker, .month {
     margin: 20px;
     padding: 20px;
-    border-left: 4px solid #ff00ff;
-    background-color: #11111f;
     border-radius: 8px;
+    background-color: #11111f;
     box-shadow: 0 0 15px #ff00ff33;
   }
 
   .step {
     display: flex;
     align-items: center;
-    margin: 15px 0;
+    margin: 12px 0;
     padding: 10px;
     border-radius: 6px;
     background-color: #1b1b2f;
@@ -42,9 +40,7 @@
     transition: 0.3s;
   }
 
-  .step:hover {
-    box-shadow: 0 0 20px #00ffea;
-  }
+  .step:hover { box-shadow: 0 0 20px #00ffea; }
 
   .check-btn {
     margin-right: 15px;
@@ -53,17 +49,13 @@
     border: 2px solid #00ffea;
     border-radius: 4px;
     cursor: pointer;
-    position: relative;
     transition: 0.3s;
+    position: relative;
   }
 
-  .check-btn.checked {
-    background-color: #00ffea;
-  }
+  .check-btn.checked { background-color: #00ffea; }
 
-  .step-content {
-    flex: 1;
-  }
+  .step-content { flex: 1; }
 
   .project {
     color: #ff00ff;
@@ -71,17 +63,11 @@
     text-shadow: 0 0 5px #ff00ff;
   }
 
-  /* Scrollbar neon style */
   ::-webkit-scrollbar {
     width: 10px;
   }
-  ::-webkit-scrollbar-track {
-    background: #0e0e14;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: #00ffea;
-    border-radius: 10px;
-  }
+  ::-webkit-scrollbar-track { background: #0e0e14; }
+  ::-webkit-scrollbar-thumb { background: #00ffea; border-radius: 10px; }
 
 </style>
 </head>
@@ -89,6 +75,12 @@
 
 <h1>Full Stack + DSA Roadmap (Dec 2025 – Apr 2026)</h1>
 
+<!-- Project Progress Tracker -->
+<div class="tracker" id="project-tracker">
+  <h2>Project Progress Tracker</h2>
+</div>
+
+<!-- Roadmap Steps -->
 <div id="roadmap"></div>
 
 <script>
@@ -146,7 +138,53 @@ const roadmapData = [
 ];
 
 const roadmapContainer = document.getElementById('roadmap');
+const projectTracker = document.getElementById('project-tracker');
 
+// Collect all projects
+const allProjects = [];
+roadmapData.forEach(month => {
+  month.steps.forEach(step => {
+    allProjects.push(step.project);
+  });
+});
+const uniqueProjects = [...new Set(allProjects)];
+
+// Create top project tracker
+const projectBtnMap = {};
+uniqueProjects.forEach((project, index) => {
+  const projDiv = document.createElement('div');
+  projDiv.classList.add('step');
+
+  const checkBtn = document.createElement('div');
+  checkBtn.classList.add('check-btn');
+  checkBtn.id = `project-${index}`;
+  if (localStorage.getItem(checkBtn.id) === 'true') checkBtn.classList.add('checked');
+  projectBtnMap[project] = checkBtn;
+
+  const stepContent = document.createElement('div');
+  stepContent.classList.add('step-content');
+  stepContent.textContent = project;
+
+  checkBtn.addEventListener('click', () => {
+    checkBtn.classList.toggle('checked');
+    localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
+
+    // Sync with roadmap steps
+    document.querySelectorAll(`.step-content`).forEach(el => {
+      if (el.innerHTML.includes(project)) {
+        const btn = el.previousSibling;
+        btn.classList.toggle('checked', checkBtn.classList.contains('checked'));
+        localStorage.setItem(btn.id, btn.classList.contains('checked'));
+      }
+    });
+  });
+
+  projDiv.appendChild(checkBtn);
+  projDiv.appendChild(stepContent);
+  projectTracker.appendChild(projDiv);
+});
+
+// Create month-wise roadmap
 roadmapData.forEach((monthData, mIndex) => {
   const monthDiv = document.createElement('div');
   monthDiv.classList.add('month');
@@ -162,17 +200,21 @@ roadmapData.forEach((monthData, mIndex) => {
     const checkBtn = document.createElement('div');
     checkBtn.classList.add('check-btn');
     checkBtn.id = `step-${mIndex}-${sIndex}`;
-    if (localStorage.getItem(checkBtn.id) === 'true') {
-      checkBtn.classList.add('checked');
-    }
-    checkBtn.addEventListener('click', () => {
-      checkBtn.classList.toggle('checked');
-      localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
-    });
+    if (localStorage.getItem(checkBtn.id) === 'true') checkBtn.classList.add('checked');
 
     const stepContent = document.createElement('div');
     stepContent.classList.add('step-content');
     stepContent.innerHTML = `<span>${step.learn}</span><br><span class="project">Project: ${step.project}</span>`;
+
+    // Sync step click with top tracker
+    checkBtn.addEventListener('click', () => {
+      checkBtn.classList.toggle('checked');
+      localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
+      if (projectBtnMap[step.project]) {
+        projectBtnMap[step.project].classList.toggle('checked', checkBtn.classList.contains('checked'));
+        localStorage.setItem(projectBtnMap[step.project].id, projectBtnMap[step.project].classList.contains('checked'));
+      }
+    });
 
     stepDiv.appendChild(checkBtn);
     stepDiv.appendChild(stepContent);
