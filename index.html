@@ -1,140 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ebin's Progress Tracker</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Stack + DSA Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Dark Neon Theme */
+  body {
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    background-color: #0e0e14;
+    color: #fff;
+  }
 
-  <!-- ✅ Link to external CSS -->
-  <link rel="stylesheet" href="style.css" />
+  h1, h2, h3 {
+    color: #00ffea;
+    text-shadow: 0 0 8px #00ffea;
+  }
+
+  h1 { text-align: center; margin-top: 20px; }
+  h2 { margin-top: 40px; border-bottom: 1px solid #00ffea; padding-bottom: 5px; }
+
+  .month {
+    margin: 20px;
+    padding: 20px;
+    border-left: 4px solid #ff00ff;
+    background-color: #11111f;
+    border-radius: 8px;
+    box-shadow: 0 0 15px #ff00ff33;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #1b1b2f;
+    box-shadow: 0 0 10px #00ffea33;
+    transition: 0.3s;
+  }
+
+  .step:hover {
+    box-shadow: 0 0 20px #00ffea;
+  }
+
+  .check-btn {
+    margin-right: 15px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #00ffea;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: 0.3s;
+  }
+
+  .check-btn.checked {
+    background-color: #00ffea;
+  }
+
+  .step-content {
+    flex: 1;
+  }
+
+  .project {
+    color: #ff00ff;
+    font-weight: bold;
+    text-shadow: 0 0 5px #ff00ff;
+  }
+
+  /* Scrollbar neon style */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #0e0e14;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #00ffea;
+    border-radius: 10px;
+  }
+
+</style>
 </head>
-
 <body>
 
-  <header>Ebin's Progress Tracker 🚀</header>
+<h1>Full Stack + DSA Roadmap (Dec 2025 – Apr 2026)</h1>
 
-  <main id="content">
-    <!-- ===================== -->
-    <!-- Month 1 -->
-    <!-- ===================== -->
-    <section class="month" id="month1">
-      <h2>📅 December 2025 — Frontend Foundations + DSA Basics</h2>
-      <p class="subtext">Focus on HTML, CSS, JS fundamentals and basic DSA (arrays, strings, recursion).</p>
+<div id="roadmap"></div>
 
-      <h3>Mini Projects</h3>
-      <p class="project">🌦️ Weather Insight App – Fetch live weather data using Fetch API & JSON.</p>
-      <p class="project">🎵 Music Mood Visualizer – Animate UI elements based on user mood.</p>
-      <p class="project">🧠 Typing Speed Tracker – Use timers and DOM logic for performance tracking.</p>
-      <p class="project">📖 Interactive Resume Page – Responsive design with animations.</p>
+<script>
+const roadmapData = [
+  {
+    month: "December — Frontend Core + DSA Foundations",
+    steps: [
+      { learn: "HTML semantics, structure, forms, tables, SEO, accessibility.", project: "Interactive Resume Page" },
+      { learn: "CSS Flexbox, Grid, transitions, media queries, responsive design principles.", project: "Portfolio Showcase" },
+      { learn: "JavaScript basics — variables, arrays, objects, loops, functions, ES6 syntax.", project: "TempoTimer" },
+      { learn: "DOM manipulation, event handling, querySelector, dynamic content rendering.", project: "StoryWeaver" },
+      { learn: "Fetch API, async/await, JSON parsing, error handling.", project: "Weather Insight App" },
+      { learn: "DSA fundamentals — Arrays, Strings, Recursion, Hashmaps, Two Pointers.", project: "Solve 20 problems" },
+    ]
+  },
+  {
+    month: "January — React Basics + Intermediate DSA",
+    steps: [
+      { learn: "React setup with Vite, JSX, Components, Props.", project: "Quote Generator" },
+      { learn: "useState, useEffect hooks, lifecycle logic.", project: "CineMatch" },
+      { learn: "Conditional rendering, list rendering, keys, dynamic components.", project: "Flashcards Tool" },
+      { learn: "Tailwind CSS integration, component-level styling, utility classes.", project: "BudgetBee" },
+      { learn: "DSA — Advanced Arrays (prefix sums, sliding window, two pointers).", project: "Solve 15 medium-level array problems" },
+    ]
+  },
+  {
+    month: "February — React Advanced + Linked List",
+    steps: [
+      { learn: "Context API for global state management.", project: "PlanSync" },
+      { learn: "React Router for multi-page navigation and nested routes.", project: "NoteVerse" },
+      { learn: "Custom Hooks, useRef, reusable components (Card, Modal, Form).", project: "StreamBox" },
+      { learn: "Axios for API integration, form validation (Yup or custom).", project: "TaskMind" },
+      { learn: "DSA — Linked List (creation, reversal, cycle detection).", project: "Build linked list manually, 10 problems" },
+    ]
+  },
+  {
+    month: "March — Backend (Node + Express + MongoDB) + Stack/Queue",
+    steps: [
+      { learn: "Node.js fundamentals — modules, event loop, npm scripts, environment variables.", project: "ServerBase" },
+      { learn: "Express.js setup, routing, middleware, controllers.", project: "AuthForge" },
+      { learn: "MongoDB, Mongoose schemas, CRUD operations, validation, population.", project: "Notes API" },
+      { learn: "Middleware layering, error handling, role-based access control.", project: "TaskStream API" },
+      { learn: "DSA — Stack & Queue.", project: "Solve 10–15 stack/queue problems" },
+    ]
+  },
+  {
+    month: "April — MERN Integration + Trees + Deployment",
+    steps: [
+      { learn: "Frontend–Backend integration using Axios and proxy configuration.", project: "SkillSync" },
+      { learn: "JWT-based frontend auth flow, protected routes, token persistence.", project: "CodeTalk" },
+      { learn: "Deployment — Vercel (frontend), Render (backend), MongoDB Atlas.", project: "HabitPulse" },
+      { learn: "DSA — Trees (insertion, search, traversal, height).", project: "Solve 10 tree problems" },
+    ]
+  }
+];
 
-      <h3>Tasks</h3>
-      <ul>
-        <li><label>Revise HTML structure, forms, tables <input type="checkbox"></label></li>
-        <li><label>Learn CSS Flexbox, Grid, media queries <input type="checkbox"></label></li>
-        <li><label>Add animations using CSS transitions <input type="checkbox"></label></li>
-        <li><label>Practice JS Arrays, Objects, DOM <input type="checkbox"></label></li>
-        <li><label>Explore Fetch API with JSON data <input type="checkbox"></label></li>
-      </ul>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-    </section>
+const roadmapContainer = document.getElementById('roadmap');
 
-    <!-- ===================== -->
-    <!-- Month 2 -->
-    <!-- ===================== -->
-    <section class="month" id="month2">
-      <h2>📅 January 2026 — React Basics + Arrays Advanced</h2>
-      <p class="subtext">Learn React components, hooks, and strengthen DSA with sliding window & 2-pointer problems.</p>
+roadmapData.forEach((monthData, mIndex) => {
+  const monthDiv = document.createElement('div');
+  monthDiv.classList.add('month');
 
-      <h3>Mini Projects</h3>
-      <p class="project">🧠 Quote Generator – Async fetch + React state.</p>
-      <p class="project">🎬 Movie Explorer – API integration + pagination.</p>
-      <p class="project">📊 Expense Tracker – State, hooks, and localStorage.</p>
-      <p class="project">⚡ Flashcards Tool – CRUD operations with props.</p>
+  const monthTitle = document.createElement('h2');
+  monthTitle.textContent = monthData.month;
+  monthDiv.appendChild(monthTitle);
 
-      <h3>Tasks</h3>
-      <ul>
-        <li><label>React setup + folder structure <input type="checkbox"></label></li>
-        <li><label>Learn Components, Props, State <input type="checkbox"></label></li>
-        <li><label>Master useState, useEffect hooks <input type="checkbox"></label></li>
-        <li><label>Conditional rendering, lists, keys <input type="checkbox"></label></li>
-        <li><label>Use Tailwind CSS for styling <input type="checkbox"></label></li>
-      </ul>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-    </section>
+  monthData.steps.forEach((step, sIndex) => {
+    const stepDiv = document.createElement('div');
+    stepDiv.classList.add('step');
 
-    <!-- ===================== -->
-    <!-- Month 3 -->
-    <!-- ===================== -->
-    <section class="month" id="month3">
-      <h2>📅 February 2026 — React Advanced + Linked List</h2>
-      <p class="subtext">Advance to Context, Routing, Custom Hooks, and learn linked list DSA problems.</p>
+    const checkBtn = document.createElement('div');
+    checkBtn.classList.add('check-btn');
+    checkBtn.id = `step-${mIndex}-${sIndex}`;
+    if (localStorage.getItem(checkBtn.id) === 'true') {
+      checkBtn.classList.add('checked');
+    }
+    checkBtn.addEventListener('click', () => {
+      checkBtn.classList.toggle('checked');
+      localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
+    });
 
-      <h3>Mini Projects</h3>
-      <p class="project">📚 Study Planner App – Context API + Router.</p>
-      <p class="project">🎧 Podcast Library – CRUD with external APIs.</p>
-      <p class="project">🎯 Productivity Tracker – Manage charts + state.</p>
+    const stepContent = document.createElement('div');
+    stepContent.classList.add('step-content');
+    stepContent.innerHTML = `<span>${step.learn}</span><br><span class="project">Project: ${step.project}</span>`;
 
-      <h3>Tasks</h3>
-      <ul>
-        <li><label>useContext, useRef, custom hooks <input type="checkbox"></label></li>
-        <li><label>Routing with React Router <input type="checkbox"></label></li>
-        <li><label>Controlled forms + validation <input type="checkbox"></label></li>
-        <li><label>Reusable components <input type="checkbox"></label></li>
-        <li><label>Axios for API calls <input type="checkbox"></label></li>
-      </ul>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-    </section>
+    stepDiv.appendChild(checkBtn);
+    stepDiv.appendChild(stepContent);
+    monthDiv.appendChild(stepDiv);
+  });
 
-    <!-- ===================== -->
-    <!-- Month 4 -->
-    <!-- ===================== -->
-    <section class="month" id="month4">
-      <h2>📅 March 2026 — Backend (Node + Express + MongoDB) + Stack/Queue</h2>
-      <p class="subtext">Build REST APIs, authentication systems, and learn Stack/Queue DSA concepts.</p>
+  roadmapContainer.appendChild(monthDiv);
+});
+</script>
 
-      <h3>Mini Projects</h3>
-      <p class="project">💬 Auth API – JWT + bcrypt authentication.</p>
-      <p class="project">🗒️ Notes Backend – CRUD + auth middleware.</p>
-      <p class="project">📦 File Share API – File upload & sharing links.</p>
-
-      <h3>Tasks</h3>
-      <ul>
-        <li><label>Node.js basics, npm, express setup <input type="checkbox"></label></li>
-        <li><label>REST routes + CRUD operations <input type="checkbox"></label></li>
-        <li><label>MongoDB + Mongoose models <input type="checkbox"></label></li>
-        <li><label>JWT auth + bcrypt <input type="checkbox"></label></li>
-        <li><label>Middleware & error handling <input type="checkbox"></label></li>
-      </ul>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-    </section>
-
-    <!-- ===================== -->
-    <!-- Month 5 -->
-    <!-- ===================== -->
-    <section class="month" id="month5">
-      <h2>📅 April 2026 — MERN Integration + Trees + Deployment</h2>
-      <p class="subtext">Integrate React + Node + MongoDB, deploy apps, and learn trees & recursion.</p>
-
-      <h3>Final Projects</h3>
-      <p class="project">🎓 SkillSync – Study resource & goal tracker.</p>
-      <p class="project">💬 CodeTalk – Developer forum + comments.</p>
-      <p class="project">📈 HabitFlow – Productivity dashboard + charts.</p>
-
-      <h3>Tasks</h3>
-      <ul>
-        <li><label>Connect frontend ↔ backend (Axios) <input type="checkbox"></label></li>
-        <li><label>CRUD + Auth integration <input type="checkbox"></label></li>
-        <li><label>Deploy backend (Render) + frontend (Vercel) <input type="checkbox"></label></li>
-        <li><label>Use MongoDB Atlas cloud DB <input type="checkbox"></label></li>
-      </ul>
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-    </section>
-
-  </main>
-
-  <footer>Made with 💜 by Ebin — Progress never stops 🚀</footer>
-
-  <!-- ✅ Link JS at the bottom -->
-  <script src="script.js"></script>
 </body>
-        </html>
+</html>
