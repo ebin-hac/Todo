@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -19,7 +19,7 @@
   }
 
   h1 { text-align: center; margin-top: 20px; }
-  h2 { margin-top: 30px; border-bottom: 1px solid #00ffea; padding-bottom: 5px; }
+  h2 { margin-top: 20px; }
 
   .tracker, .month {
     margin: 20px;
@@ -56,11 +56,26 @@
   .check-btn.checked { background-color: #00ffea; }
 
   .step-content { flex: 1; }
+  .project-name { font-weight: bold; color: #ff00ff; text-shadow: 0 0 5px #ff00ff; }
+  .project-desc { font-size: 0.9em; color: #00ffffaa; margin-top: 2px; }
 
-  .project {
-    color: #ff00ff;
+  .progress-bar-container {
+    background: #222;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 20px;
+    margin: 15px 0;
+  }
+
+  .progress-bar {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #00ffea, #ff00ff);
+    text-align: center;
+    line-height: 20px;
+    color: #111;
     font-weight: bold;
-    text-shadow: 0 0 5px #ff00ff;
+    transition: width 0.4s;
   }
 
   ::-webkit-scrollbar {
@@ -73,11 +88,14 @@
 </head>
 <body>
 
-<h1>Full Stack + DSA Roadmap (Dec 2025 – Apr 2026)</h1>
+<h1>Ebin's Progress</h1>
 
 <!-- Project Progress Tracker -->
 <div class="tracker" id="project-tracker">
-  <h2>Project Progress Tracker</h2>
+  <h2>Projects Overview</h2>
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progress-bar">0%</div>
+  </div>
 </div>
 
 <!-- Roadmap Steps -->
@@ -88,70 +106,67 @@ const roadmapData = [
   {
     month: "December — Frontend Core + DSA Foundations",
     steps: [
-      { learn: "HTML semantics, structure, forms, tables, SEO, accessibility.", project: "Interactive Resume Page" },
-      { learn: "CSS Flexbox, Grid, transitions, media queries, responsive design principles.", project: "Portfolio Showcase" },
-      { learn: "JavaScript basics — variables, arrays, objects, loops, functions, ES6 syntax.", project: "TempoTimer" },
-      { learn: "DOM manipulation, event handling, querySelector, dynamic content rendering.", project: "StoryWeaver" },
-      { learn: "Fetch API, async/await, JSON parsing, error handling.", project: "Weather Insight App" },
-      { learn: "DSA fundamentals — Arrays, Strings, Recursion, Hashmaps, Two Pointers.", project: "Solve 20 problems" },
+      { learn: "HTML semantics, structure, forms, tables, SEO, accessibility.", project: "Interactive Resume Page", desc: "Responsive resume with multiple sections using Flexbox & Grid." },
+      { learn: "CSS Flexbox, Grid, transitions, media queries, responsive design principles.", project: "Portfolio Showcase", desc: "Responsive portfolio with hover effects and animations." },
+      { learn: "JavaScript basics — variables, arrays, objects, loops, functions, ES6 syntax.", project: "TempoTimer", desc: "Interactive timer with start, stop, reset using DOM logic." },
+      { learn: "DOM manipulation, event handling, querySelector, dynamic content rendering.", project: "StoryWeaver", desc: "Interactive story app responding to user actions." },
+      { learn: "Fetch API, async/await, JSON parsing, error handling.", project: "Weather Insight App", desc: "Fetch weather data from OpenWeather API and render dynamically." },
+      { learn: "DSA fundamentals — Arrays, Strings, Recursion, Hashmaps, Two Pointers.", project: "Solve 20 problems", desc: "Practice basic array & string problems." },
     ]
   },
   {
     month: "January — React Basics + Intermediate DSA",
     steps: [
-      { learn: "React setup with Vite, JSX, Components, Props.", project: "Quote Generator" },
-      { learn: "useState, useEffect hooks, lifecycle logic.", project: "CineMatch" },
-      { learn: "Conditional rendering, list rendering, keys, dynamic components.", project: "Flashcards Tool" },
-      { learn: "Tailwind CSS integration, component-level styling, utility classes.", project: "BudgetBee" },
-      { learn: "DSA — Advanced Arrays (prefix sums, sliding window, two pointers).", project: "Solve 15 medium-level array problems" },
+      { learn: "React setup with Vite, JSX, Components, Props.", project: "Quote Generator", desc: "Render random quotes using component props and async fetch." },
+      { learn: "useState, useEffect hooks, lifecycle logic.", project: "CineMatch", desc: "Movie browser with API fetch + pagination using useEffect." },
+      { learn: "Conditional rendering, list rendering, keys, dynamic components.", project: "Flashcards Tool", desc: "CRUD flashcards list with state updates and conditional display." },
+      { learn: "Tailwind CSS integration, component-level styling, utility classes.", project: "BudgetBee", desc: "Expense tracker with dynamic transaction rendering." },
+      { learn: "DSA — Advanced Arrays (prefix sums, sliding window, two pointers).", project: "Solve 15 medium-level array problems", desc: "Practice sliding window & prefix sums problems." },
     ]
   },
   {
     month: "February — React Advanced + Linked List",
     steps: [
-      { learn: "Context API for global state management.", project: "PlanSync" },
-      { learn: "React Router for multi-page navigation and nested routes.", project: "NoteVerse" },
-      { learn: "Custom Hooks, useRef, reusable components (Card, Modal, Form).", project: "StreamBox" },
-      { learn: "Axios for API integration, form validation (Yup or custom).", project: "TaskMind" },
-      { learn: "DSA — Linked List (creation, reversal, cycle detection).", project: "Build linked list manually, 10 problems" },
+      { learn: "Context API for global state management.", project: "PlanSync", desc: "Study planner app managing tasks using Context + useReducer." },
+      { learn: "React Router for multi-page navigation and nested routes.", project: "NoteVerse", desc: "Markdown note app with folder navigation via routes." },
+      { learn: "Custom Hooks, useRef, reusable components (Card, Modal, Form).", project: "StreamBox", desc: "Podcast player using custom hooks & reusable UI parts." },
+      { learn: "Axios for API integration, form validation (Yup or custom).", project: "TaskMind", desc: "Trello-style board with form validation and CRUD functionality." },
+      { learn: "DSA — Linked List (creation, reversal, cycle detection).", project: "Build linked list manually, 10 problems", desc: "Practice core linked list problems." },
     ]
   },
   {
     month: "March — Backend (Node + Express + MongoDB) + Stack/Queue",
     steps: [
-      { learn: "Node.js fundamentals — modules, event loop, npm scripts, environment variables.", project: "ServerBase" },
-      { learn: "Express.js setup, routing, middleware, controllers.", project: "AuthForge" },
-      { learn: "MongoDB, Mongoose schemas, CRUD operations, validation, population.", project: "Notes API" },
-      { learn: "Middleware layering, error handling, role-based access control.", project: "TaskStream API" },
-      { learn: "DSA — Stack & Queue.", project: "Solve 10–15 stack/queue problems" },
+      { learn: "Node.js fundamentals — modules, event loop, npm scripts, environment variables.", project: "ServerBase", desc: "Simple API returning mock JSON data for frontend testing." },
+      { learn: "Express.js setup, routing, middleware, controllers.", project: "AuthForge", desc: "JWT authentication API with bcrypt password hashing." },
+      { learn: "MongoDB, Mongoose schemas, CRUD operations, validation, population.", project: "Notes API", desc: "Store, update, delete notes with persistent MongoDB data." },
+      { learn: "Middleware layering, error handling, role-based access control.", project: "TaskStream API", desc: "Multi-user CRUD system with permissions." },
+      { learn: "DSA — Stack & Queue.", project: "Solve 10–15 stack/queue problems", desc: "Practice stack and queue real-time simulations." },
     ]
   },
   {
     month: "April — MERN Integration + Trees + Deployment",
     steps: [
-      { learn: "Frontend–Backend integration using Axios and proxy configuration.", project: "SkillSync" },
-      { learn: "JWT-based frontend auth flow, protected routes, token persistence.", project: "CodeTalk" },
-      { learn: "Deployment — Vercel (frontend), Render (backend), MongoDB Atlas.", project: "HabitPulse" },
-      { learn: "DSA — Trees (insertion, search, traversal, height).", project: "Solve 10 tree problems" },
+      { learn: "Frontend–Backend integration using Axios and proxy configuration.", project: "SkillSync", desc: "Full-stack MERN learning tracker with CRUD & auth." },
+      { learn: "JWT-based frontend auth flow, protected routes, token persistence.", project: "CodeTalk", desc: "Developer forum with comments, auth, post creation." },
+      { learn: "Deployment — Vercel (frontend), Render (backend), MongoDB Atlas.", project: "HabitPulse", desc: "Full MERN app deployed live with analytics dashboard." },
+      { learn: "DSA — Trees (insertion, search, traversal, height).", project: "Solve 10 tree problems", desc: "Practice tree traversals and recursion problems." },
     ]
   }
 ];
 
 const roadmapContainer = document.getElementById('roadmap');
 const projectTracker = document.getElementById('project-tracker');
+const progressBar = document.getElementById('progress-bar');
 
-// Collect all projects
+// Collect unique projects
 const allProjects = [];
-roadmapData.forEach(month => {
-  month.steps.forEach(step => {
-    allProjects.push(step.project);
-  });
-});
-const uniqueProjects = [...new Set(allProjects)];
+roadmapData.forEach(month => month.steps.forEach(step => allProjects.push({ name: step.project, desc: step.desc })));
+const uniqueProjects = [...new Map(allProjects.map(p => [p.name, p])).values()];
 
-// Create top project tracker
+// Create project tracker
 const projectBtnMap = {};
-uniqueProjects.forEach((project, index) => {
+uniqueProjects.forEach((proj, index) => {
   const projDiv = document.createElement('div');
   projDiv.classList.add('step');
 
@@ -159,24 +174,17 @@ uniqueProjects.forEach((project, index) => {
   checkBtn.classList.add('check-btn');
   checkBtn.id = `project-${index}`;
   if (localStorage.getItem(checkBtn.id) === 'true') checkBtn.classList.add('checked');
-  projectBtnMap[project] = checkBtn;
+  projectBtnMap[proj.name] = checkBtn;
 
   const stepContent = document.createElement('div');
   stepContent.classList.add('step-content');
-  stepContent.textContent = project;
+  stepContent.innerHTML = `<div class="project-name">${proj.name}</div><div class="project-desc">${proj.desc}</div>`;
 
   checkBtn.addEventListener('click', () => {
     checkBtn.classList.toggle('checked');
     localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
-
-    // Sync with roadmap steps
-    document.querySelectorAll(`.step-content`).forEach(el => {
-      if (el.innerHTML.includes(project)) {
-        const btn = el.previousSibling;
-        btn.classList.toggle('checked', checkBtn.classList.contains('checked'));
-        localStorage.setItem(btn.id, btn.classList.contains('checked'));
-      }
-    });
+    syncProjectToSteps(proj.name, checkBtn.classList.contains('checked'));
+    updateProgress();
   });
 
   projDiv.appendChild(checkBtn);
@@ -184,7 +192,7 @@ uniqueProjects.forEach((project, index) => {
   projectTracker.appendChild(projDiv);
 });
 
-// Create month-wise roadmap
+// Month-wise roadmap
 roadmapData.forEach((monthData, mIndex) => {
   const monthDiv = document.createElement('div');
   monthDiv.classList.add('month');
@@ -206,7 +214,7 @@ roadmapData.forEach((monthData, mIndex) => {
     stepContent.classList.add('step-content');
     stepContent.innerHTML = `<span>${step.learn}</span><br><span class="project">Project: ${step.project}</span>`;
 
-    // Sync step click with top tracker
+    // Sync roadmap step with top tracker
     checkBtn.addEventListener('click', () => {
       checkBtn.classList.toggle('checked');
       localStorage.setItem(checkBtn.id, checkBtn.classList.contains('checked'));
@@ -214,6 +222,7 @@ roadmapData.forEach((monthData, mIndex) => {
         projectBtnMap[step.project].classList.toggle('checked', checkBtn.classList.contains('checked'));
         localStorage.setItem(projectBtnMap[step.project].id, projectBtnMap[step.project].classList.contains('checked'));
       }
+      updateProgress();
     });
 
     stepDiv.appendChild(checkBtn);
@@ -223,6 +232,29 @@ roadmapData.forEach((monthData, mIndex) => {
 
   roadmapContainer.appendChild(monthDiv);
 });
+
+// Sync function
+function syncProjectToSteps(projectName, checked) {
+  document.querySelectorAll('.step-content').forEach(el => {
+    if (el.innerHTML.includes(projectName)) {
+      const btn = el.previousSibling;
+      btn.classList.toggle('checked', checked);
+      localStorage.setItem(btn.id, checked);
+    }
+  });
+}
+
+// Update progress bar
+function updateProgress() {
+  const total = uniqueProjects.length;
+  const completed = uniqueProjects.filter(p => projectBtnMap[p.name].classList.contains('checked')).length;
+  const percent = Math.round((completed / total) * 100);
+  progressBar.style.width = percent + '%';
+  progressBar.textContent = percent + '%';
+}
+
+// Initialize progress bar
+updateProgress();
 </script>
 
 </body>
