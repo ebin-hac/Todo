@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Ebin — Striver-style Week-by-Week MAANG Roadmap</title>
+<title>Ebin — Week-by-Week MAANG Roadmap (icons + articles)</title>
 <style>
 :root{
   --bg:#071026; --panel:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#f97316;
@@ -27,9 +27,10 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 .month-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
 .month-header h2{margin:0;font-size:16px}
 .month-desc{color:var(--muted);font-size:13px;margin-top:6px}
-.week{background:rgba(255,255,255,0.01);margin-top:10px;padding:8px;border-radius:8px}
-.week-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.week-head .wtitle{font-weight:700}
+.week{background:rgba(255,255,255,0.01);margin-top:10px;padding:10px;border-radius:8px}
+.week-head{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:12px}
+.wtitle{font-weight:700}
+.wmeta{color:var(--muted);font-size:13px}
 .wbar{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:8px}
 .wbar>i{height:100%;background:#2563eb;width:0%;transition:width .25s}
 .table{margin-top:10px;border-top:1px solid rgba(255,255,255,0.03);font-size:14px}
@@ -38,12 +39,13 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 .checkbox{display:flex;align-items:center;justify-content:center}
 .title-cell{font-weight:600}
 .small{font-size:13px;color:var(--muted);margin-top:6px}
-.res-icons{display:flex;gap:8px}
-.icon{width:22px;height:22px;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:white}
+.res-icons{display:flex;gap:8px;align-items:center}
+.icon{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:white;text-decoration:none}
 .icon.yt{background:#ff3b30}
 .icon.doc{background:#06b6d4}
 .icon.api{background:#94a3b8}
-.diff{padding:6px 8px;border-radius:999px;font-size:12px;font-weight:700;color:#000}
+.icon.md{background:#0ea5a4}
+.diff{padding:6px 8px;border-radius:999px;font-size:12px;font-weight:700;color:#000;display:inline-block}
 .diff.easy{background:var(--easy)}
 .diff.med{background:var(--med)}
 .diff.hard{background:var(--hard)}
@@ -56,7 +58,8 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helveti
 .modal{position:fixed;inset:0;background:rgba(2,6,23,0.7);display:none;align-items:center;justify-content:center;z-index:90}
 .modal-box{background:var(--panel);padding:16px;border-radius:10px;width:760px;max-width:96%}
 input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color:var(--txt);padding:8px;border-radius:6px}
-@media(max-width:980px){.grid{grid-template-columns:1fr}.controls{width:100%}.row{grid-template-columns:40px 1fr 120px 1fr;grid-auto-rows:min-content}}
+@media(max-width:1100px){.row{grid-template-columns:40px 1fr 100px 1fr;grid-auto-rows:min-content} .res-icons{gap:6px} .controls{width:44%}}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.controls{width:100%}.row{grid-template-columns:32px 1fr;gap:6px;padding:8px}.row.head{display:none}}
 </style>
 </head>
 <body>
@@ -64,7 +67,7 @@ input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color
   <div class="header">
     <div class="title">
       <h1>EBIN TRACKER — Week-by-Week MAANG Roadmap</h1>
-      <p class="lead">Striver-style tracker with week groups, projects, DSA, DevOps & career actions. Progress & notes saved locally.</p>
+      <p class="lead">Striver-style tracker. Week groups, projects, DSA, DevOps & career actions. Progress & notes saved locally.</p>
       <div class="top-stats">
         <div style="font-size:13px;color:var(--muted)">Overall progress</div>
         <div class="progress-bar"><i id="overallFill"></i></div>
@@ -84,9 +87,7 @@ input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color
   </div>
 
   <div class="grid">
-    <div id="leftCol">
-      <!-- months will be rendered here -->
-    </div>
+    <div id="leftCol"></div>
 
     <aside class="aside">
       <div class="card">
@@ -104,18 +105,18 @@ input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color
 
       <div class="card">
         <h3>System Design & DevOps</h3>
-        <div class="small">Study URL shortener, Chat app, Notification service. Dockerize & deploy. CI/CD with GitHub Actions.</div>
+        <div class="small">URL shortener, chat & notification case studies. Dockerize, CI/CD & deploy to AWS.</div>
       </div>
 
       <div class="card">
         <h3>Mentor Tips</h3>
-        <div class="small">Keep components small, test reducers, document one technical challenge in README per project.</div>
+        <div class="small">Keep components small, write reducer tests, document one challenge in README per project.</div>
       </div>
     </aside>
   </div>
 </div>
 
-<!-- Details modal -->
+<!-- Modal -->
 <div id="modal" class="modal">
   <div class="modal-box">
     <div style="display:flex;justify-content:space-between;align-items:start">
@@ -134,329 +135,173 @@ input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color
 </div>
 
 <script>
-/* ====== Full Week-by-Week Roadmap Data (mapped from our conversation) ====== */
+// ---------- Data (week-by-week) with added resource links ----------
 const ROADMAP = [
   {
-    id:'dec',
-    name:'December — Frontend Core + JS Foundations',
+    id:'dec', name:'December — Frontend Core + JS Foundations',
     description:'HTML, CSS, JS, DOM, Fetch API, accessibility, performance, Git basics, DSA foundations.',
     weeks:[
       { id:'dec-w1', title:'Week 1 — HTML & CSS', items:[
-        { id:'dec-html', type:'topic', title:'HTML & Semantic Markup', why:'Accessibility & SEO; structural foundation.', resources:[{title:'Traversy HTML Crash',url:'https://www.youtube.com/watch?v=UB1O30fR-EE'}], practice:'Build Interactive Resume; deploy to GitHub Pages', difficulty:'Easy' },
-        { id:'dec-css-box', type:'topic', title:'CSS: Box Model & Selectors', why:'Core mechanics to avoid layout bugs.', resources:[{title:'MDN CSS',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS'}], practice:'Style resume & portfolio', difficulty:'Easy' },
-        { id:'dec-flexgrid', type:'topic', title:'Flexbox & Grid', why:'Modern layout techniques.', resources:[{title:'Flexbox Froggy',url:'https://flexboxfroggy.com/'},{title:'Kevin Powell Grid',url:'https://www.youtube.com/watch?v=9zBsdzdE4sM'}], practice:'Create responsive grid', difficulty:'Easy' },
-        { id:'dec-responsive', type:'topic', title:'Responsive Design & Media Queries', why:'Mobile-first approach.', resources:[], practice:'Make portfolio mobile-friendly', difficulty:'Easy' },
-        { id:'dec-access', type:'topic', title:'Accessibility & SEO basics', why:'Inclusive design and better findability.', resources:[{title:'web.dev A11y',url:'https://web.dev/learn/accessibility/'}], practice:'Run Lighthouse & fix issues', difficulty:'Medium' }
+        { id:'dec-html', type:'topic', title:'HTML & Semantic Markup', why:'Accessibility & SEO; structural foundation.',
+          resources:[
+            {title:'Traversy: HTML Crash Course', url:'https://www.youtube.com/watch?v=UB1O30fR-EE'},
+            {title:'MDN: HTML basics', url:'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML'}
+          ],
+          practice:'Build Interactive Resume; deploy to GitHub Pages', difficulty:'Easy' },
+
+        { id:'dec-css-box', type:'topic', title:'CSS: Box Model & Selectors', why:'Core mechanics to avoid layout bugs.',
+          resources:[ {title:'MDN CSS box model', url:'https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/The_box_model'} ],
+          practice:'Style resume & portfolio', difficulty:'Easy' },
+
+        { id:'dec-flexgrid', type:'topic', title:'Flexbox & Grid', why:'Modern layout techniques.',
+          resources:[ {title:'Flexbox Froggy',url:'https://flexboxfroggy.com/'}, {title:'Kevin Powell: CSS Grid',url:'https://www.youtube.com/watch?v=9zBsdzdE4sM'} ],
+          practice:'Create responsive grid', difficulty:'Easy' },
+
+        { id:'dec-responsive', type:'topic', title:'Responsive Design & Media Queries', why:'Mobile-first approach.',
+          resources:[ {title:'Responsive design MDN',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Media_queries'} ],
+          practice:'Make portfolio mobile-friendly', difficulty:'Easy' },
+
+        { id:'dec-access', type:'topic', title:'Accessibility & SEO basics', why:'Inclusive design and better findability.',
+          resources:[ {title:'web.dev accessibility',url:'https://web.dev/learn/accessibility/'}, {title:'a11y Project', url:'https://www.a11yproject.com/'} ],
+          practice:'Run Lighthouse & fix issues', difficulty:'Medium' }
       ]},
+
       { id:'dec-w2', title:'Week 2 — JavaScript & DOM', items:[
-        { id:'dec-js', type:'topic', title:'JavaScript ES6+ Basics', why:'Modern JS features used everywhere.', resources:[{title:'freeCodeCamp JS',url:'https://www.youtube.com/watch?v=PkZNo7MFNFg'}], practice:'map/filter/reduce, arrow functions', difficulty:'Easy' },
-        { id:'dec-dom', type:'topic', title:'DOM Manipulation & Events', why:'Understanding UI updates before React.', resources:[{title:'JS.info DOM',url:'https://javascript.info/dom-nodes'}], practice:'Build To-Do app (localStorage)', difficulty:'Medium' },
-        { id:'proj-tempotimer', type:'project', title:'TempoTimer', why:'Intervals & state updates.', resources:[], practice:'Start/pause/reset + lap feature', difficulty:'Medium' },
-        { id:'proj-storyweaver', type:'project', title:'StoryWeaver', why:'Branching UI logic.', resources:[], practice:'Branch story JSON & render choices', difficulty:'Medium' }
+        { id:'dec-js', type:'topic', title:'JavaScript ES6+ Basics', why:'Modern JS features used everywhere.',
+          resources:[ {title:'freeCodeCamp JS Full Course',url:'https://www.youtube.com/watch?v=PkZNo7MFNFg'}, {title:'JavaScript.info', url:'https://javascript.info/'} ],
+          practice:'map/filter/reduce, arrow functions, destructuring', difficulty:'Easy' },
+
+        { id:'dec-dom', type:'topic', title:'DOM Manipulation & Events', why:'Understanding UI updates before React.',
+          resources:[ {title:'JS.info DOM',url:'https://javascript.info/dom-nodes'} ],
+          practice:'Build To-Do app with localStorage', difficulty:'Medium' },
+
+        { id:'proj-tempotimer', type:'project', title:'TempoTimer', why:'Intervals & state updates.',
+          resources:[], practice:'Start/pause/reset + lap feature', difficulty:'Medium' },
+
+        { id:'proj-storyweaver', type:'project', title:'StoryWeaver (branching story)', why:'Branching UI logic.',
+          resources:[], practice:'Branch story JSON & render choices', difficulty:'Medium' }
       ]},
+
       { id:'dec-w3', title:'Week 3 — Async & APIs', items:[
-        { id:'dec-fetch', type:'topic', title:'Fetch API & async/await', why:'Server communication & error handling.', resources:[{title:'MDN Fetch',url:'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API'}], practice:'Create fetch wrapper with retries', difficulty:'Medium' },
-        { id:'proj-weather', type:'project', title:'Weather Insight App', why:'Real API work & UI states.', resources:[{title:'OpenWeather',url:'https://openweathermap.org/api'}], practice:'Debounced search + error UI', difficulty:'Medium' },
-        { id:'dec-postman', type:'topic', title:'Postman & API testing', why:'Validate endpoints and debugging.', resources:[], practice:'Create sample collection', difficulty:'Easy' }
+        { id:'dec-fetch', type:'topic', title:'Fetch API & async/await', why:'Server communication & error handling.',
+          resources:[ {title:'MDN Fetch API',url:'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API'} ],
+          practice:'Create fetch wrapper with retries', difficulty:'Medium' },
+
+        { id:'proj-weather', type:'project', title:'Weather Insight App', why:'Real API work & UI states.',
+          resources:[ {title:'OpenWeather API',url:'https://openweathermap.org/api'} ],
+          practice:'Debounced search + caching', difficulty:'Medium' },
+
+        { id:'dec-postman', type:'topic', title:'Postman & API testing', why:'Validate endpoints and debugging.',
+          resources:[ {title:'Postman Docs',url:'https://learning.postman.com/docs/getting-started/introduction/'} ], practice:'Create sample collection', difficulty:'Easy' }
       ]},
+
       { id:'dec-w4', title:'Week 4 — DSA: Arrays & Strings', items:[
-        { id:'dec-dsa', type:'topic', title:'DSA: Arrays & Strings (20 problems)', why:'Core interview topics and patterns.', resources:[{title:'NeetCode',url:'https://neetcode.io/practice'}], practice:'Solve 20 problems and push notes', difficulty:'Medium' }
+        { id:'dec-dsa', type:'topic', title:'DSA: Arrays & Strings (20 problems)', why:'Core interview topics and patterns.',
+          resources:[ {title:'NeetCode Arrays',url:'https://neetcode.io/practice'} ], practice:'Solve 20 problems and write notes', difficulty:'Medium' }
       ]}
     ]
   },
 
   {
-    id:'jan',
-    name:'January — React Basics + Intermediate DSA',
+    id:'jan', name:'January — React Basics + Intermediate DSA',
     description:'Vite, React, components, hooks, Tailwind & medium-level DSA.',
     weeks:[
       { id:'jan-w1', title:'Week 1 — React Fundamentals', items:[
-        { id:'vite-setup', type:'topic', title:'Vite + React Setup', why:'Fast dev server & modern tooling.', resources:[{title:'Vite',url:'https://vitejs.dev/'}], practice:'Create starter app', difficulty:'Easy' },
-        { id:'react-components', type:'topic', title:'Components, Props & JSX', why:'Reusable UI blocks.', resources:[{title:'React Docs',url:'https://react.dev/learn'}], practice:'Build Quote Generator', difficulty:'Easy' }
+        { id:'vite-setup', type:'topic', title:'Vite + React Setup', why:'Fast dev server & modern tooling.',
+          resources:[ {title:'Vite Docs',url:'https://vitejs.dev/'} ], practice:'Create starter app', difficulty:'Easy' },
+        { id:'react-components', type:'topic', title:'React: Components, Props & JSX', why:'Reusable UI blocks.',
+          resources:[ {title:'React Docs',url:'https://react.dev/learn'} ], practice:'Build Quote Generator', difficulty:'Easy' }
       ]},
       { id:'jan-w2', title:'Week 2 — Hooks & API', items:[
-        { id:'useState-effect', type:'topic', title:'useState & useEffect', why:'State & side-effects in components.', resources:[], practice:'CineMatch: API + useEffect', difficulty:'Medium' },
-        { id:'proj-cinematch', type:'project', title:'CineMatch (Movie Browser)', why:'Pagination & search UI patterns.', resources:[], practice:'TMDB/OMDb integration', difficulty:'Medium' }
+        { id:'useState-effect', type:'topic', title:'useState & useEffect', why:'State & side-effects in components.',
+          resources:[], practice:'CineMatch: API + useEffect', difficulty:'Medium' },
+        { id:'proj-cinematch', type:'project', title:'CineMatch (Movie Browser)', why:'Pagination & search UI patterns.',
+          resources:[ {title:'TMDB API',url:'https://developers.themoviedb.org/3/getting-started/introduction'} ], practice:'TMDB integration', difficulty:'Medium' }
       ]},
       { id:'jan-w3', title:'Week 3 — Styling & Components', items:[
-        { id:'tailwind', type:'topic', title:'Tailwind CSS', why:'Utility-first styling for speed.', resources:[{title:'Tailwind',url:'https://tailwindcss.com/'}], practice:'Create component library', difficulty:'Easy' },
-        { id:'proj-flashcards', type:'project', title:'Flashcards Tool', why:'CRUD & component reuse.', resources:[], practice:'Card flip + persistence', difficulty:'Medium' }
+        { id:'tailwind', type:'topic', title:'Tailwind CSS', why:'Utility-first styling for speed.',
+          resources:[ {title:'Tailwind Docs',url:'https://tailwindcss.com/docs/installation'} ], practice:'Create component library', difficulty:'Easy' },
+        { id:'proj-flashcards', type:'project', title:'Flashcards Tool', why:'CRUD & component reuse.',
+          resources:[], practice:'Card flip + persistence', difficulty:'Medium' }
       ]},
       { id:'jan-w4', title:'Week 4 — BudgetBee & DSA', items:[
-        { id:'proj-budgetbee', type:'project', title:'BudgetBee Expense Tracker', why:'Aggregation & state patterns.', resources:[], practice:'Transactions, totals & charts', difficulty:'Medium' },
-        { id:'jan-dsa', type:'topic', title:'DSA: Advanced Arrays (15 problems)', why:'Sliding window & prefix sums.', resources:[], practice:'Solve 15 problems', difficulty:'Medium' }
+        { id:'proj-budgetbee', type:'project', title:'BudgetBee Expense Tracker', why:'Aggregation & state patterns.',
+          resources:[], practice:'Transactions, totals & charts', difficulty:'Medium' },
+        { id:'jan-dsa', type:'topic', title:'DSA: Advanced Arrays (15 problems)', why:'Sliding window & prefix sums.',
+          resources:[ {title:'Blind 75 / NeetCode',url:'https://neetcode.io/practice'} ], practice:'Solve 15 problems', difficulty:'Medium' }
       ]}
     ]
   },
 
   {
-    id:'feb',
-    name:'February — Advanced React, Routing & Linked List DSA',
-    description:'Context, Router, custom hooks, TS intro, Linked List practice.',
+    id:'feb', name:'February — Advanced React, Routing & LinkedList DSA',
+    description:'Context, Router, custom hooks, validation & linked list problems.',
     weeks:[
       { id:'feb-w1', title:'Week 1 — Context & Reducers', items:[
-        { id:'context', type:'topic', title:'Context API + useReducer', why:'Global state for medium apps.', resources:[], practice:'PlanSync study planner', difficulty:'Medium' }
+        { id:'context', type:'topic', title:'Context API + useReducer', why:'Global state for medium apps.',
+          resources:[ {title:'React Context Docs',url:'https://react.dev/reference/react/useContext'} ], practice:'PlanSync study planner', difficulty:'Medium' }
       ]},
       { id:'feb-w2', title:'Week 2 — Routing & Protected Routes', items:[
-        { id:'router', type:'topic', title:'React Router v6', why:'Nested routes & protection.', resources:[], practice:'NoteVerse nested routing', difficulty:'Easy' }
+        { id:'router', type:'topic', title:'React Router v6', why:'Nested routes & protection.',
+          resources:[ {title:'React Router Docs',url:'https://reactrouter.com/en/main'} ], practice:'NoteVerse nested routing', difficulty:'Easy' }
       ]},
       { id:'feb-w3', title:'Week 3 — Custom Hooks & Forms', items:[
-        { id:'custom-hooks', type:'topic', title:'Custom Hooks & useRef', why:'DRY logic & refs for DOM', resources:[], practice:'StreamBox: usePlayer hook', difficulty:'Medium' },
-        { id:'forms', type:'topic', title:'Form Validation (Yup)', why:'Secure, reliable forms', resources:[], practice:'Add validation to PlanSync', difficulty:'Medium' }
+        { id:'custom-hooks', type:'topic', title:'Custom Hooks & useRef', why:'DRY repeated logic & refs for DOM interactions.',
+          resources:[], practice:'StreamBox: create usePlayer hook', difficulty:'Medium' },
+        { id:'forms', type:'topic', title:'Form Validation (Yup)', why:'Reliable form validation patterns.',
+          resources:[ {title:'Yup Docs',url:'https://github.com/jquense/yup'} ], practice:'Add validation to PlanSync', difficulty:'Medium' }
       ]},
-      { id:'feb-w4', title:'Week 4 — Linked List DSA', items:[
-        { id:'feb-dsa', type:'topic', title:'DSA: Linked List (10 problems)', why:'Pointer problems & memory model.', resources:[], practice:'Reverse, detect cycle, merge lists', difficulty:'Medium' }
+      { id:'feb-w4', title:'Week 4 — LinkedList DSA', items:[
+        { id:'feb-dsa', type:'topic', title:'DSA: Linked List (10 problems)', why:'Pointer & memory model problems.',
+          resources:[], practice:'Reverse, detect cycle, merge', difficulty:'Medium' }
       ]}
     ]
   },
 
   {
-    id:'mar',
-    name:'March — Backend: Node, Express, MongoDB & DevOps Intro',
-    description:'APIs, auth, DB modeling, Docker, Redis caching, testing & system design intro.',
+    id:'mar', name:'March — Backend: Node, Express, MongoDB & DevOps Intro',
+    description:'APIs, auth, DB modeling, Docker, Redis, testing & basic system design.',
     weeks:[
       { id:'mar-w1', title:'Week 1 — Node & Express', items:[
-        { id:'node', type:'topic', title:'Node.js Fundamentals', why:'Event loop & async patterns.', resources:[{title:'Node Crash Course',url:'https://www.youtube.com/watch?v=fBNz5xF-Kx4'}], practice:'ServerBase skeleton', difficulty:'Medium' },
-        { id:'express', type:'topic', title:'Express & REST Design', why:'Routing, controllers & middleware.', resources:[], practice:'Build Notes API endpoints', difficulty:'Medium' }
+        { id:'node', type:'topic', title:'Node.js Fundamentals', why:'Event loop & async patterns for servers.',
+          resources:[ {title:'Node Crash Course (Traversy)',url:'https://www.youtube.com/watch?v=fBNz5xF-Kx4'} ], practice:'ServerBase skeleton', difficulty:'Medium' },
+        { id:'express', type:'topic', title:'Express.js & REST Design', why:'Routing, middleware & controllers.',
+          resources:[ {title:'Express Guide', url:'https://expressjs.com/en/starter/guide.html'} ], practice:'Build Notes API endpoints', difficulty:'Medium' }
       ]},
       { id:'mar-w2', title:'Week 2 — Auth & Security', items:[
-        { id:'authforge', type:'project', title:'AuthForge (JWT Auth API)', why:'Signup/login, bcrypt & JWT flows.', resources:[], practice:'Implement refresh tokens + Postman tests', difficulty:'Medium' }
+        { id:'authforge', type:'project', title:'AuthForge (JWT Auth API)', why:'Signup/login flows, refresh tokens & secure storage.',
+          resources:[ {title:'JWT Intro',url:'https://jwt.io/introduction/'}, {title:'OWASP Auth', url:'https://owasp.org/'} ], practice:'Implement refresh tokens + Postman tests', difficulty:'Medium' }
       ]},
       { id:'mar-w3', title:'Week 3 — MongoDB & Mongoose', items:[
-        { id:'mongo', type:'topic', title:'MongoDB & Mongoose', why:'Schemas, population & indexes.', resources:[{title:'MongoDB Crash',url:'https://www.youtube.com/watch?v=Of1k2g_L2wU'}], practice:'Model notes & users', difficulty:'Medium' }
+        { id:'mongo', type:'topic', title:'MongoDB & Mongoose', why:'Schemas, population & indexes.',
+          resources:[ {title:'MongoDB University',url:'https://university.mongodb.com/'}, {title:'Mongoose Docs',url:'https://mongoosejs.com/docs/guide.html'} ], practice:'Model notes & users', difficulty:'Medium' }
       ]},
       { id:'mar-w4', title:'Week 4 — Docker, Redis & Tests', items:[
-        { id:'docker', type:'topic', title:'Docker & Redis', why:'Containerization & caching.', resources:[], practice:'Dockerize Notes API + Redis cache', difficulty:'Medium' },
-        { id:'testing', type:'topic', title:'Testing APIs (Jest + Supertest)', why:'Confidence & regression testing.', resources:[], practice:'Write tests for core endpoints', difficulty:'Medium' },
+        { id:'docker', type:'topic', title:'Docker & Redis basics', why:'Containerization & caching for production.',
+          resources:[ {title:'Docker Docs',url:'https://docs.docker.com/get-started/'}, {title:'Redis Docs',url:'https://redis.io/docs/' } ], practice:'Dockerize Notes API + Redis cache', difficulty:'Medium' },
+        { id:'testing', type:'topic', title:'Testing APIs (Jest + Supertest)', why:'Regression coverage & confidence.',
+          resources:[ {title:'Jest Docs',url:'https://jestjs.io/docs/getting-started'} ], practice:'Write tests for core endpoints', difficulty:'Medium' },
         { id:'mar-dsa', type:'topic', title:'DSA: Stack & Queue (15 problems)', why:'LIFO/FIFO patterns.', resources:[], practice:'Solve 15 problems', difficulty:'Medium' }
       ]}
     ]
   },
 
   {
-    id:'apr',
-    name:'April — MERN Integration, CI/CD, AWS & Flagship Projects',
-    description:'End-to-end integration, CI/CD, monitoring, AI flagship, system design & production readiness.',
+    id:'apr', name:'April — MERN Integration, CI/CD, AWS & Flagship Projects',
+    description:'Integrate frontend+backend, CI/CD, monitoring, flagship AI project & system design studies.',
     weeks:[
-      { id:'apr-w1', title:'Week 1 — Integration & Auth', items:[
-        { id:'integration', type:'topic', title:'Frontend ↔ Backend Integration', why:'Axios, token refresh & protected routes.', resources:[], practice:'SkillSync integration', difficulty:'Medium' }
+      { id:'apr-w1', title:'Week1 — Integration & Auth', items:[
+        { id:'integration', type:'topic', title:'Frontend ↔ Backend Integration', why:'Axios, token refresh & protected routes.',
+          resources:[ {title:'Axios Docs',url:'https://axios-http.com/docs/intro'} ], practice:'SkillSync integration', difficulty:'Medium' }
       ]},
-      { id:'apr-w2', title:'Week 2 — CodeTalk Features', items:[
-        { id:'codetalk', type:'project', title:'CodeTalk (Developer Forum)', why:'Posts/comments, search, moderation & RBAC.', resources:[], practice:'Deploy forum with pagination', difficulty:'Hard' }
+      { id:'apr-w2', title:'Week2 — CodeTalk Features', items:[
+        { id:'codetalk', type:'project', title:'CodeTalk (Developer Forum)', why:'Posts/comments, moderation & RBAC.',
+          resources:[], practice:'Deploy forum with pagination', difficulty:'Hard' }
       ]},
-      { id:'apr-w3', title:'Week 3 — DevOps & Deploy', items:[
-        { id:'devops', type:'topic', title:'Docker Compose, Nginx & Deploy', why:'Run multi-service stacks in prod.', resources:[], practice:'Deploy backend to EC2, frontend to S3+CloudFront or Vercel', difficulty:'Hard' },
-        { id:'cicd', type:'topic', title:'CI/CD: GitHub Actions', why:'Automate tests & deploys.', resources:[], practice:'Create workflow to run tests & deploy', difficulty:'Hard' }
+      { id:'apr-w3', title:'Week3 — DevOps & Deploy', items:[
+        { id:'devops', type:'topic', title:'Docker Compose, Nginx & Deploy', why:'Run multi-service stacks in production.',
+          resources:[ {title:'Docker Compose',url:'https://docs.docker.com/compose/'}, {title:'Nginx Docs',url:'https://nginx.org/en/docs/'} ], practice:'Deploy backend to EC2, frontend to S3+CloudFront', difficulty:'Hard' },
+        { id:'cicd', type:'topic', title:'CI/CD: GitHub Actions', why:'Automate tests & deploys.',
+          resources:[ {title:'GitHub Actions',url:'https://docs.github.com/en/actions'} ], practice:'Create workflow to run tests & deploy', difficulty:'Hard' }
       ]},
-      { id:'apr-w4', title:'Week 4 — Monitoring & Flagship', items:[
-        { id:'monitoring', type:'topic', title:'Monitoring & Logging', why:'Sentry & structured logs for production.', resources:[{title:'Sentry',url:'https://sentry.io/'}], practice:'Integrate Sentry & Winston', difficulty:'Medium' },
-        { id:'ai', type:'project', title:'AI Code Review Assistant', why:'Flagship with OpenAI & production infra.', resources:[{title:'OpenAI',url:'https://platform.openai.com/docs'}], practice:'Deploy AI reviewer + reports', difficulty:'Hard' },
-        { id:'apr-dsa', type:'topic', title:'DSA: Trees (10 problems)', why:'Recursion & traversals.', resources:[], practice:'Implement traversals, LCA, balance checks', difficulty:'Medium' },
-        { id:'sysdesign', type:'topic', title:'System Design Case Studies', why:'Design for scale: URL shortener, chat, notifications.', resources:[{title:'System Design Primer',url:'https://github.com/donnemartin/system-design-primer'}], practice:'Create architecture diagrams & tradeoffs', difficulty:'Hard' },
-        { id:'career-oss', type:'topic', title:'OSS & Resume Polish', why:'OSS contributions & good bullets help hiring.', resources:[], practice:'Open small PR; refine resume bullets with metrics', difficulty:'Medium' }
-      ]}
-    ]
-  }
-];
-
-/* Persistence keys */
-const PROG_KEY = 'ebin_striver_progress_v1';
-const NOTES_KEY = 'ebin_striver_notes_v1';
-
-/* Load progress & notes */
-let progress = {};
-let notes = {};
-try { progress = JSON.parse(localStorage.getItem(PROG_KEY)) || {}; } catch(e){ progress = {}; }
-try { notes = JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch(e){ notes = {}; }
-
-/* helpers */
-const $ = (sel, p=document) => p.querySelector(sel);
-const $$ = (sel, p=document) => Array.from(p.querySelectorAll(sel));
-
-function saveProgress(){ localStorage.setItem(PROG_KEY, JSON.stringify(progress)); updateStats(); updateOverall(); }
-function saveNotes(){ localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
-
-/* UI refs */
-const leftCol = document.getElementById('leftCol');
-const overallFill = document.getElementById('overallFill');
-const overallText = document.getElementById('overallText');
-const statMonths = document.getElementById('statMonths');
-const statItems = document.getElementById('statItems');
-const statDone = document.getElementById('statDone');
-const statDSA = document.getElementById('statDSA');
-
-function difficultyClass(d){
-  if(!d) return 'diff med';
-  d = d.toLowerCase();
-  if(d.includes('easy')) return 'diff easy';
-  if(d.includes('hard')) return 'diff hard';
-  return 'diff med';
-}
-
-/* render entire UI */
-function render(){
-  leftCol.innerHTML = '';
-  let totalItems=0, totalDone=0, dsaCount=0;
-  ROADMAP.forEach(month=>{
-    // month card
-    const m = document.createElement('div'); m.className='month';
-    const head = document.createElement('div'); head.className='month-header';
-    head.innerHTML = `<div>
-      <h2>${month.name}</h2>
-      <div class="month-desc">${month.description}</div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:13px;color:var(--muted)">Weeks: ${month.weeks.length}</div>
-      <div style="margin-top:6px"><button class="btn" data-action="toggleMonth">Toggle</button></div>
-    </div>`;
-    m.appendChild(head);
-
-    // container for weeks
-    const weeksWrap = document.createElement('div');
-
-    month.weeks.forEach(week=>{
-      // week box
-      const weekBox = document.createElement('div'); weekBox.className='week';
-      const weekHead = document.createElement('div'); weekHead.className='week-head';
-      weekHead.innerHTML = `<div class="wtitle">${week.title}</div><div class="small" id="wk-${week.id}-meta"></div>`;
-      weekBox.appendChild(weekHead);
-      const wbar = document.createElement('div'); wbar.className='wbar'; wbar.innerHTML = '<i style="width:0%"></i>'; weekBox.appendChild(wbar);
-
-      // table header
-      const table = document.createElement('div'); table.className='table';
-      const headerRow = document.createElement('div'); headerRow.className='row head';
-      headerRow.innerHTML = `<div></div><div>Topic / Project</div><div>Resources</div><div>Practice / What to build</div><div>Why it matters</div><div>Diff</div><div>Notes</div>`;
-      table.appendChild(headerRow);
-
-      // items
-      let weekTotal=0, weekDone=0;
-      week.items.forEach(item=>{
-        weekTotal++; totalItems++;
-        if(item.title && item.title.toLowerCase().includes('dsa')) {
-          // attempt to pick number of DSA problems from title
-          const n = (item.title.match(/(\d+)/)||[])[0]; if(n) dsaCount += parseInt(n);
-        }
-        if(progress[item.id]) { weekDone++; totalDone++; }
-        const row = document.createElement('div'); row.className='row';
-        // checkbox
-        const cbWrap = document.createElement('div'); cbWrap.className='checkbox';
-        const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!progress[item.id];
-        cb.addEventListener('change', ()=>{ progress[item.id]=cb.checked; saveProgress(); render(); });
-        cbWrap.appendChild(cb);
-        // title
-        const titleCell = document.createElement('div'); titleCell.className='title-cell';
-        titleCell.innerHTML = `<div>${item.title}</div><div class="small">${item.type ? item.type.toUpperCase() : 'TOPIC'} ${item.suggestedTime ? ' • ' + item.suggestedTime : ''}</div>`;
-        // dblclick to open modal
-        titleCell.addEventListener('dblclick', ()=> openModal(item));
-        // resources
-        const resCell = document.createElement('div'); resCell.className='res-icons';
-        if(item.resources && item.resources.length){
-          item.resources.forEach(r=>{
-            const a = document.createElement('a'); a.className='icon doc'; a.href=r.url; a.target='_blank'; a.title=r.title; a.textContent='doc';
-            resCell.appendChild(a);
-          });
-        } else {
-          resCell.innerHTML = '<span style="color:var(--muted)">—</span>';
-        }
-        // practice
-        const practiceCell = document.createElement('div');
-        practiceCell.innerHTML = item.practice ? item.practice : (item.type==='project' ? 'Build & deploy, README' : 'Follow resources & practice');
-        // why
-        const whyCell = document.createElement('div'); whyCell.className='small'; whyCell.textContent = item.why || '';
-        // diff
-        const diffCell = document.createElement('div'); diffCell.innerHTML = `<div class="${difficultyClass(item.difficulty||'Medium')}">${item.difficulty|| (item.type==='project'?'Hard':'Medium')}</div>`;
-        // notes
-        const notesCell = document.createElement('div'); const ta = document.createElement('textarea'); ta.className='notes'; ta.value = notes[item.id] || '';
-        ta.addEventListener('change', ()=>{ notes[item.id]=ta.value; saveNotes(); });
-        notesCell.appendChild(ta);
-
-        // assemble
-        row.appendChild(cbWrap);
-        const c1 = document.createElement('div'); c1.appendChild(titleCell); row.appendChild(c1);
-        const c2 = document.createElement('div'); c2.appendChild(resCell); row.appendChild(c2);
-        const c3 = document.createElement('div'); c3.appendChild(practiceCell); row.appendChild(c3);
-        const c4 = document.createElement('div'); c4.appendChild(whyCell); row.appendChild(c4);
-        const c5 = document.createElement('div'); c5.appendChild(diffCell); row.appendChild(c5);
-        const c6 = document.createElement('div'); c6.appendChild(notesCell); row.appendChild(c6);
-
-        table.appendChild(row);
-      });
-
-      weekBox.appendChild(table);
-      weeksWrap.appendChild(weekBox);
-
-      // fill week meta and bar
-      const pct = week.items.length ? Math.round((week.items.filter(it=>progress[it.id]).length / week.items.length)*100) : 0;
-      const meta = weekBox.querySelector(`#wk-${week.id}-meta`);
-      if(meta) meta.textContent = `${pct}% • ${week.items.filter(it=>progress[it.id]).length}/${week.items.length}`;
-      weekBox.querySelector('.wbar i').style.width = pct + '%';
-    });
-
-    m.appendChild(weeksWrap);
-    leftCol.appendChild(m);
-  });
-
-  // stats
-  const percent = totalItems ? Math.round((totalDone/totalItems)*100) : 0;
-  overallFill.style.width = percent + '%';
-  overallText.textContent = percent + '%';
-  statMonths.textContent = ROADMAP.length;
-  statItems.textContent = totalItems;
-  statDone.textContent = totalDone;
-  statDSA.textContent = dsaCount || '—';
-}
-
-/* Modal logic */
-const modal = document.getElementById('modal');
-const mdTitle = document.getElementById('mdTitle');
-const mdType = document.getElementById('mdType');
-const mdWhy = document.getElementById('mdWhy');
-const mdPractice = document.getElementById('mdPractice');
-const mdResources = document.getElementById('mdResources');
-const mdNotes = document.getElementById('mdNotes');
-const mdClose = document.getElementById('mdClose');
-const mdSave = document.getElementById('mdSave');
-
-function openModal(item){
-  mdTitle.textContent = item.title;
-  mdType.textContent = (item.type||'TOPIC') + (item.suggestedTime ? ' • ' + item.suggestedTime : '');
-  mdWhy.textContent = 'Why: ' + (item.why || '—');
-  mdPractice.textContent = 'Practice: ' + (item.practice || '—');
-  mdResources.innerHTML = '';
-  if(item.resources && item.resources.length){
-    const ul = document.createElement('ul');
-    item.resources.forEach(r=>{
-      const li = document.createElement('li'); li.innerHTML = `<a href="${r.url}" target="_blank" style="color:#60a5fa">${r.title}</a>`; ul.appendChild(li);
-    });
-    mdResources.appendChild(ul);
-  } else mdResources.textContent = 'No external resources provided.';
-  mdNotes.value = notes[item.id] || '';
-  modal.style.display = 'flex';
-  mdSave.onclick = ()=>{
-    notes[item.id] = mdNotes.value; saveNotes(); modal.style.display='none'; render();
-  };
-}
-mdClose.onclick = ()=> modal.style.display='none';
-modal.addEventListener('click',(e)=>{ if(e.target===modal) modal.style.display='none' });
-
-/* Search */
-$('#search').addEventListener('input', function(){
-  const q = this.value.trim().toLowerCase();
-  document.querySelectorAll('.row').forEach(row=>{
-    if(row.classList.contains('head')) return;
-    const title = row.querySelector('.title-cell') ? row.querySelector('.title-cell').textContent.toLowerCase() : '';
-    const why = row.querySelector('.small') ? row.querySelector('.small').textContent.toLowerCase() : '';
-    row.style.display = (title.includes(q) || why.includes(q)) ? (window.innerWidth>980 ? 'grid' : 'block') : 'none';
-  });
-});
-
-/* Quick actions */
-$('#markAll').addEventListener('click', ()=>{ ROADMAP.forEach(m=>m.weeks.forEach(w=>w.items.forEach(it=>progress[it.id]=true))); saveProgress(); render(); });
-$('#clearAll').addEventListener('click', ()=>{ ROADMAP.forEach(m=>m.weeks.forEach(w=>w.items.forEach(it=>progress[it.id]=false))); saveProgress(); render(); });
-$('#expandAll').addEventListener('click', ()=>{ document.querySelectorAll('.step-weeks,.week').forEach(s=>s.style.display='block'); });
-
-/* init */
-render();
-</script>
-</body>
-</html>
+ 
