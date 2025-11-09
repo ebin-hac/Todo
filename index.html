@@ -1,519 +1,145 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Ebin Tracker — Striver-style MAANG Roadmap</title>
-<style>
-:root{
-  --bg:#0b1220; --card:#0f1724; --panel:#111827; --muted:#9ca3af; --accent:#f97316;
-  --easy:#10b981; --medium:#3b82f6; --hard:#ef4444; --text:#e6eef8;
-}
-*{box-sizing:border-box}
-body{margin:0; font-family:Inter,system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); padding:20px;}
-.container{max-width:1200px;margin:0 auto}
-.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
-.title{max-width:760px}
-.title h1{margin:0;font-size:22px}
-.title p{margin:6px 0 0;color:var(--muted);font-size:13px}
-.top-controls{width:380px}
-.search{width:100%;padding:8px;border-radius:6px;border:none;background:rgba(255,255,255,0.03);color:var(--text)}
-.stats-row{display:flex;gap:12px;align-items:center;margin-top:10px}
-.progress-bar{height:10px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;width:260px}
-.progress-bar > i{display:block;height:100%;background:var(--accent);width:0%;transition:width .25s}
-.grid{display:grid;grid-template-columns:2fr 360px;gap:20px;margin-top:20px}
-.col{background:var(--card);padding:14px;border-radius:10px}
-.month{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:12px}
-.month-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
-.month-header h2{margin:0;font-size:16px}
-.month-desc{color:var(--muted);font-size:13px;margin-top:6px}
-.mprogress{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:10px}
-.mprogress > i{height:100%;background:#2563eb;width:0%}
-.step-weeks{margin-top:10px;color:var(--muted);font-size:13px}
-.table{margin-top:10px;border-top:1px solid rgba(255,255,255,0.03);font-size:14px}
-.row{display:grid;grid-template-columns:40px 1fr 120px 220px 160px 86px 1fr;gap:8px;align-items:start;padding:10px;border-bottom:1px solid rgba(255,255,255,0.02)}
-.row.header{font-size:12px;color:var(--muted);background:rgba(255,255,255,0.01);font-weight:600}
-.checkbox{display:flex;align-items:center;justify-content:center}
-.title-cell{font-weight:600}
-.small{font-size:13px;color:var(--muted);margin-top:6px}
-.resource-icons{display:flex;gap:8px}
-.icon{width:20px;height:20px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
-.icon.yt{background:#ff3b3b;color:white}
-.icon.doc{background:#0ea5a4;color:white}
-.icon.code{background:#94a3b8;color:white}
-.difficulty{padding:6px 8px;border-radius:999px;font-size:12px;color:black;font-weight:700}
-.dif-easy{background:var(--easy)}
-.dif-med{background:var(--medium)}
-.dif-hard{background:var(--hard)}
-.btn{padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.03);color:var(--text);border:none;cursor:pointer}
-.btn.orange{background:var(--accent);color:#08111a}
-.notes{background:rgba(255,255,255,0.02);padding:6px;border-radius:6px;color:var(--muted);font-size:13px}
-.aside .card{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:12px}
-.kv{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px}
-.footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-@media(max-width:980px){.grid{grid-template-columns:1fr}.top-controls{width:100%}}
-</style>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <div class="title">
-      <h1>EBIN TRACKER — A2Z MAANG Full-Stack Roadmap</h1>
-      <p>From beginner → MAANG-level full-stack in 5 months (Dec → Apr). Follow weekly steps, build projects, solve DSA, deploy.</p>
-      <div class="stats-row">
-        <div style="font-size:13px;color:var(--muted)">Overall progress</div>
-        <div class="progress-bar"><i id="overallFill"></i></div>
-        <div id="overallText" style="font-size:13px;color:var(--muted)">0%</div>
-      </div>
+import React, { useEffect, useState } from "react";
+
+// EBIN TRACKER - Single-file React + Tailwind component // - Tailwind classes assumed available in the parent project // - Persists progress to localStorage key: ebin_fullstack_progress_v2 // - Collapsible months, week-by-week topics, resources, export/import/reset
+
+const STORAGE_KEY = "ebin_fullstack_progress_v2";
+
+// Minimal SVG icons (inline for single-file convenience) const Icon = ({ name, className = "w-5 h-5 inline-block" }) => { switch (name) { case "chev": return ( <svg className={className} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M6 8L10 12L14 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> </svg> ); case "external": return ( <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M14 3H21V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> <path d="M10 14L21 3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> <path d="M21 21H3V3H12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> </svg> ); case "download": return ( <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M12 3V15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> <path d="M21 15L12 24L3 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /> </svg> ); default: return null; } };
+
+const seedData = { meta: { title: "EBIN TRACKER — A2Z MAANG Full-Stack Roadmap", localStorageKey: STORAGE_KEY }, months: [ { id: "dec", title: "DECEMBER — Frontend Core + JavaScript Foundations", description: "HTML, CSS, JavaScript core, DOM, Fetch API, accessibility, performance, Git basics, and DSA foundations. Build and deploy microprojects.", weeks: [ { id: "dec-w1", title: "Week 1 — HTML & CSS", items: [ { id: "dec-w1-1", title: "HTML & Semantic Markup", category: "Frontend", resources: [ { label: "Traversy — HTML Crash Course", href: "https://www.youtube.com/watch?v=UB1O30fR-EE" }, { label: "MDN — HTML Basics", href: "https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML" }, ], practice: "Build index.html with header/nav/main/section/article/footer and a contact form.", why: "Semantic HTML improves accessibility, SEO and is the structural basis for components later in React.", suggestedTime: "4 hrs", difficulty: "Easy", }, { id: "dec-w1-2", title: "CSS Fundamentals: Box Model, Selectors, Typography", category: "Frontend", resources: [ { label: "Kevin Powell — CSS", href: "https://www.youtube.com/@KevinPowell" }, { label: "MDN — CSS", href: "https://developer.mozilla.org/en-US/docs/Web/CSS" }, ], practice: "External stylesheet, Google Fonts, CSS variables.", why: "Prevents layout bugs and produces consistent UI.", suggestedTime: "3 hrs", difficulty: "Easy", }, ], }, { id: "dec-w2", title: "Week 2 — JavaScript Core & DOM", items: [ { id: "dec-w2-1", title: "JavaScript ES6+ Fundamentals", category: "Frontend / JS", resources: [ { label: "freeCodeCamp JS Full Course", href: "https://www.youtube.com/watch?v=PkZNo7MFNFg" }, { label: "javascript.info", href: "https://javascript.info/" }, ], practice: "map/filter/reduce, arrow funcs, destructuring.", why: "Modern JS is used everywhere — React & Node rely on these features.", suggestedTime: "6–8 hrs", difficulty: "Medium", }, ], }, ], }, { id: "jan", title: "JANUARY — React Basics + UI Systems + Intermediate DSA", description: "Boot into React (Vite), component architecture, hooks, Tailwind UI, API integration, and intermediate DSA.", weeks: [ { id: "jan-w1", title: "Week 1 — React Fundamentals (Vite)", items: [ { id: "jan-w1-1", title: "Vite + React setup, Components & JSX", category: "React", resources: [ { label: "Traversy React Crash", href: "https://www.youtube.com/watch?v=w7ejDZ8SWv8" }, { label: "React docs", href: "https://react.dev/" }, ], practice: "Create simple component library (InfoCard, Button).", why: "Core skill for frontend interviews", suggestedTime: "3 hrs", difficulty: "Easy", }, ], }, ], }, { id: "feb", title: "FEBRUARY — Advanced React, Routing, Custom Hooks & Linked List DSA", description: "Context + useReducer, React Router v6, custom hooks, form validation, TypeScript intro (migrate one app), linked list DSA.", weeks: [ { id: "feb-w1", title: "Week 1 — Context API + useReducer", items: [] }, ], }, { id: "mar", title: "MARCH — Backend: Node, Express, MongoDB + Docker + Redis + System Design Intro", description: "Server-side fundamentals, secure APIs, persistence, containerization, caching, testing, and basic system design.", weeks: [ { id: "mar-w1", title: "Week 1 — Node.js & Express", items: [] }, ], }, { id: "apr", title: "APRIL — MERN Integration, AWS, CI/CD, Monitoring, Trees & Flagship Projects", description: "Integrate frontend+backend, deploy to cloud (AWS), CI/CD, monitoring, final flagship apps, system design case studies, and DSA Trees.", weeks: [ { id: "apr-w1", title: "Week 1 — Integration basics", items: [] }, ], }, ], };
+
+function uid(prefix = "id") { return ${prefix}_${Math.random().toString(36).slice(2, 9)}; }
+
+export default function EbinTracker() { const [data, setData] = useState(() => { try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch (e) { console.warn("Failed to parse localStorage seed", e); } // add completed flags to seed const seeded = JSON.parse(JSON.stringify(seedData)); seeded.months.forEach((m) => { m.expanded = false; m.weeks.forEach((w) => { w.expanded = false; w.items.forEach((it) => (it.completed = false)); }); }); return seeded; });
+
+// derived overall progress const computeProgress = (d) => { let total = 0, done = 0; d.months.forEach((m) => { m.weeks.forEach((w) => { w.items.forEach((it) => { total += 1; if (it.completed) done += 1; }); }); }); return total === 0 ? 0 : Math.round((done / total) * 100); };
+
+const [progress, setProgress] = useState(() => computeProgress(data));
+
+useEffect(() => { setProgress(computeProgress(data)); localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }, [data]);
+
+const toggleItem = (monthId, weekId, itemId) => { setData((prev) => { const copy = JSON.parse(JSON.stringify(prev)); const m = copy.months.find((x) => x.id === monthId); if (!m) return prev; const w = m.weeks.find((x) => x.id === weekId); if (!w) return prev; const it = w.items.find((x) => x.id === itemId); if (!it) return prev; it.completed = !it.completed; return copy; }); };
+
+const toggleWeek = (monthId, weekId) => { setData((prev) => { const copy = JSON.parse(JSON.stringify(prev)); const m = copy.months.find((x) => x.id === monthId); if (!m) return prev; const w = m.weeks.find((x) => x.id === weekId); if (!w) return prev; w.expanded = !w.expanded; return copy; }); };
+
+const toggleMonth = (monthId) => { setData((prev) => { const copy = JSON.parse(JSON.stringify(prev)); const m = copy.months.find((x) => x.id === monthId); if (!m) return prev; m.expanded = !m.expanded; return copy; }); };
+
+const markAllComplete = () => { setData((prev) => { const copy = JSON.parse(JSON.stringify(prev)); copy.months.forEach((m) => m.weeks.forEach((w) => w.items.forEach((it) => (it.completed = true)))); return copy; }); };
+
+const markAllIncomplete = () => { setData((prev) => { const copy = JSON.parse(JSON.stringify(prev)); copy.months.forEach((m) => m.weeks.forEach((w) => w.items.forEach((it) => (it.completed = false)))); return copy; }); };
+
+const exportProgress = () => { const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = "ebin_progress_v2.json"; a.click(); URL.revokeObjectURL(url); };
+
+const importProgress = (file) => { if (!file) return; const reader = new FileReader(); reader.onload = (e) => { try { const parsed = JSON.parse(e.target.result); // basic validation if (!parsed.months) throw new Error("Invalid format"); setData(parsed); } catch (err) { alert("Failed to import: " + err.message); } }; reader.readAsText(file); };
+
+const resetProgress = () => { if (!confirm("Reset all progress? This cannot be undone.")) return; localStorage.removeItem(STORAGE_KEY); window.location.reload(); };
+
+return ( <div className="min-h-screen bg-slate-900 text-slate-100 p-6"> <div className="max-w-6xl mx-auto"> <header className="flex items-center justify-between mb-6"> <div> <div className="text-2xl font-bold">EBIN TRACKER</div> <div className="text-sm text-slate-400">A2Z MAANG Full-Stack Roadmap</div> </div> <div className="flex items-center gap-3"> <div className="text-sm text-slate-300">Overall: <span className="font-semibold">{progress}%</span></div> <button
+onClick={markAllComplete}
+className="bg-orange-500 hover:bg-orange-600 px-3 py-1 rounded text-sm font-medium"
+> Mark All Complete </button> <button
+onClick={markAllIncomplete}
+className="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm font-medium"
+> Mark All Incomplete </button> <button
+onClick={exportProgress}
+className="bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm flex items-center gap-2"
+> <Icon name="download" /> Export </button> <label className="bg-slate-800 hover:bg-slate-700 px-3 py-1 rounded text-sm cursor-pointer"> Import <input type="file" accept="application/json" className="hidden" onChange={(e) => importProgress(e.target.files?.[0])} /> </label> <button onClick={resetProgress} className="text-xs text-rose-400">Reset</button> </div> </header>
+
+<div className="space-y-4">
+      {data.months.map((month) => (
+        <div key={month.id} className="bg-slate-800 rounded-lg overflow-hidden">
+          <button
+            onClick={() => toggleMonth(month.id)}
+            className="w-full text-left px-5 py-4 flex items-center justify-between"
+          >
+            <div>
+              <div className="font-semibold">{month.title}</div>
+              <div className="text-xs text-slate-400">{month.description}</div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="text-sm text-slate-300">Weeks: {month.weeks.length}</div>
+              <div className="p-2 rounded bg-slate-700">
+                <Icon name="chev" />
+              </div>
+            </div>
+          </button>
+
+          {month.expanded && (
+            <div className="px-6 pb-6">
+              <div className="space-y-3 mt-2">
+                {month.weeks.map((week) => (
+                  <div key={week.id} className="bg-slate-700 rounded">
+                    <button
+                      onClick={() => toggleWeek(month.id, week.id)}
+                      className="w-full text-left px-4 py-3 flex items-center justify-between"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-2 h-2 rounded-full bg-orange-500" />
+                        <div>
+                          <div className="font-medium">{week.title}</div>
+                          <div className="text-xs text-slate-400">{week.items.length} topic(s)</div>
+                        </div>
+                      </div>
+                      <div className="text-slate-300">{week.expanded ? "Hide" : "Show"}</div>
+                    </button>
+
+                    {week.expanded && (
+                      <div className="p-4 border-t border-slate-600">
+                        <div className="space-y-3">
+                          {week.items.map((it) => (
+                            <div key={it.id} className="flex items-start gap-3">
+                              <input
+                                id={it.id}
+                                type="checkbox"
+                                checked={!!it.completed}
+                                onChange={() => toggleItem(month.id, week.id, it.id)}
+                                className="mt-1 w-4 h-4 text-orange-500 rounded"
+                              />
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between">
+                                  <div>
+                                    <div className="font-medium">{it.title}</div>
+                                    <div className="text-xs text-slate-400">{it.category} · {it.suggestedTime} · {it.difficulty}</div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    {it.resources?.slice(0,3).map((r, idx) => (
+                                      <a
+                                        key={idx}
+                                        href={r.href}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="text-xs px-2 py-1 bg-slate-800 rounded hover:bg-slate-700 flex items-center gap-1"
+                                      >
+                                        <Icon name="external" />
+                                        <span className="truncate max-w-[12rem]">{r.label}</span>
+                                      </a>
+                                    ))}
+                                  </div>
+                                </div>
+                                <div className="mt-2 text-sm text-slate-300">{it.practice}</div>
+                                <div className="mt-2 text-xs text-slate-400">Why: {it.why}</div>
+                              </div>
+                            </div>
+                          ))}
+                          {week.items.length === 0 && (
+                            <div className="text-sm text-slate-400">No topics for this week yet.</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
 
-    <div class="top-controls">
-      <input id="search" class="search" placeholder="Search topics, projects, resources, why..." />
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button id="markAll" class="btn orange">Mark All</button>
-        <button id="clearAll" class="btn">Clear All</button>
-        <button id="expandAll" class="btn">Expand All</button>
-      </div>
-      <div style="margin-top:10px;font-size:13px;color:var(--muted)">Progress & notes saved locally in your browser.</div>
-    </div>
-  </div>
-
-  <div class="grid" id="mainGrid">
-    <div>
-      <!-- Left column months -->
-      <div id="monthsList"></div>
-      <div class="footer">Built for Ebin — adapt topics or resources in the code anytime.</div>
-    </div>
-
-    <aside class="aside">
-      <div class="card">
-        <h3>Quick Stats</h3>
-        <div class="kv"><span>Total Months</span><span id="statMonths">0</span></div>
-        <div class="kv"><span>Total Items</span><span id="statItems">0</span></div>
-        <div class="kv"><span>Completed</span><span id="statDone">0</span></div>
-        <div class="kv"><span>DSA Problems</span><span id="statDSA">0</span></div>
-      </div>
-
-      <div class="card">
-        <h3>Career Actions / Checklist</h3>
-        <div class="small">
-          • Weekly Loom demo (3 min)<br>
-          • Blog post / LinkedIn summary weekly<br>
-          • PR etiquette: small PRs, clear messages<br>
-          • Mock interviews: schedule 3 in March/April
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>System Design & DevOps</h3>
-        <div class="small">
-          Study URL shortener, Chat app, Notification service. Dockerize apps. Setup CI/CD (GitHub Actions). Deploy to AWS (EC2 & S3).
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Mentor Tips</h3>
-        <div class="small">
-          Keep components small; write tests for reducers; document one challenge in README per project; record a 3-minute demo weekly.
-        </div>
-      </div>
-    </aside>
+    <footer className="mt-8 text-sm text-slate-400">
+      Local storage key: <code className="bg-slate-800 px-2 py-1 rounded">{STORAGE_KEY}</code>
+    </footer>
   </div>
 </div>
 
-<!-- Details modal -->
-<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.7);align-items:center;justify-content:center;z-index:80">
-  <div style="background:var(--panel);padding:16px;border-radius:10px;width:780px;max-width:96%">
-    <div style="display:flex;justify-content:space-between;align-items:start">
-      <div>
-        <div id="mdTitle" style="font-weight:700;font-size:16px"></div>
-        <div id="mdType" style="color:var(--muted);margin-top:6px;font-size:13px"></div>
-      </div>
-      <div>
-        <button id="mdClose" class="btn">Close</button>
-      </div>
-    </div>
-    <div id="mdWhy" style="margin-top:12px;color:var(--muted)"></div>
-    <div id="mdPractice" style="margin-top:8px;color:var(--muted)"></div>
-    <div id="mdResources" style="margin-top:10px"></div>
-    <div style="margin-top:8px">
-      <textarea id="mdNotes" placeholder="Add personal notes..." style="width:100%;min-height:80px;background:#071226;color:var(--text);border-radius:6px;padding:8px;border:none"></textarea>
-      <div style="text-align:right;margin-top:8px"><button id="mdSave" class="btn orange">Save Note</button></div>
-    </div>
-  </div>
-</div>
-
-<script>
-// === MASTER ROADMAP DATA (complete) ===
-// Each month has weeks array and items array containing full topics, projects, DSA, DevOps, career tasks etc.
-// This is the canonical content from our conversation.
-const ROADMAP = [
-  {
-    id: 'dec',
-    name: 'December — Frontend Core + JavaScript Foundations',
-    description: 'HTML, CSS, JavaScript core, DOM, Fetch API, accessibility, performance, Git basics, and DSA foundations (Arrays & Strings).',
-    weeks: [
-      { title: 'Week 1 — HTML & CSS', tasks: ['HTML semantics', 'Box model & selectors', 'Flexbox & Grid', 'Responsive design', 'Accessibility & Lighthouse'] },
-      { title: 'Week 2 — JavaScript & DOM', tasks: ['ES6 basics', 'DOM manipulation', 'Events & localStorage', 'TempoTimer project'] },
-      { title: 'Week 3 — Async & APIs', tasks: ['Fetch API', 'OpenWeather integration', 'Postman basics'] },
-      { title: 'Week 4 — DSA Foundations', tasks: ['Arrays patterns', 'String problems (20 problems)'] }
-    ],
-    items: [
-      { id:'dec-html', type:'topic', title:'HTML & Semantic Markup', why:'Semantic HTML improves accessibility and SEO; provides clear structure for components.', resources:[{title:'Traversy: HTML Crash Course',url:'https://www.youtube.com/watch?v=UB1O30fR-EE'},{title:'MDN: HTML Basics',url:'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML'}], practice:'Build Interactive Resume page and deploy to GitHub Pages', difficulty:'Easy' },
-
-      { id:'dec-css-box', type:'topic', title:'CSS: Box Model & Selectors', why:'Fundamental CSS mechanics prevent layout bugs.', resources:[{title:'MDN CSS',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS'}], practice:'Style resume and portfolio', difficulty:'Easy' },
-
-      { id:'dec-flexgrid', type:'topic', title:'Flexbox & Grid', why:'Modern layout tools for responsive UIs.', resources:[{title:'Flexbox Froggy',url:'https://flexboxfroggy.com/'},{title:'Kevin Powell Grid',url:'https://www.youtube.com/watch?v=9zBsdzdE4sM'}], practice:'Create responsive portfolio grid', difficulty:'Easy' },
-
-      { id:'dec-responsive', type:'topic', title:'Responsive Design & Media Queries', why:'Mobile-first is industry standard, test across devices.', resources:[], practice:'Make portfolio mobile-friendly', difficulty:'Easy' },
-
-      { id:'dec-access', type:'topic', title:'Accessibility (A11y) & SEO basics', why:'Inclusive products and recruiter checks; improves reach.', resources:[{title:'web.dev A11y',url:'https://web.dev/learn/accessibility/'}], practice:'Run Lighthouse, fix issues', difficulty:'Medium' },
-
-      { id:'dec-perf', type:'topic', title:'Performance Basics', why:'Faster apps mean better UX and lower infra cost.', resources:[{title:'web.dev performance',url:'https://web.dev/performance/'}], practice:'Optimize images, lazy-load assets', difficulty:'Medium' },
-
-      { id:'proj-resume', type:'project', title:'Interactive Resume Page', why:'First portfolio piece with deployment, responsive layout and accessibility.', resources:[], practice:'Deploy with GitHub Pages; include screenshots & README', difficulty:'Medium' },
-
-      { id:'proj-portfolio', type:'project', title:'Portfolio Showcase', why:'Displays design polish and projects — recruiter magnet.', resources:[], practice:'Add hover effects, animations, responsive layout', difficulty:'Medium' },
-
-      { id:'dec-js', type:'topic', title:'JavaScript: ES6+ Basics', why:'Modern JS is used everywhere; prepares for React & Node.', resources:[{title:'freeCodeCamp JS Full',url:'https://www.youtube.com/watch?v=PkZNo7MFNFg'}], practice:'map/filter/reduce, arrow functions, destructuring', difficulty:'Easy' },
-
-      { id:'dec-dom', type:'topic', title:'DOM Manipulation & Events', why:'Understand how UI updates work before React.', resources:[{title:'JS.info DOM',url:'https://javascript.info/dom-nodes'}], practice:'Build To-Do app with localStorage', difficulty:'Medium' },
-
-      { id:'proj-tempotimer', type:'project', title:'TempoTimer (Timer App)', why:'Practice intervals, timing and state updates.', resources:[], practice:'Deploy timer with lap feature', difficulty:'Medium' },
-
-      { id:'proj-storyweaver', type:'project', title:'StoryWeaver (Interactive Story)', why:'Branching UI logic that maps to React patterns.', resources:[], practice:'Implement branching and state persistence', difficulty:'Medium' },
-
-      { id:'proj-weather', type:'project', title:'Weather Insight App', why:'API integration, async/await and error handling (OpenWeather).', resources:[{title:'OpenWeather',url:'https://openweathermap.org/api'}], practice:'Debounced search + error UI + caching', difficulty:'Medium' },
-
-      { id:'dec-dsa', type:'topic', title:'DSA: Arrays & Strings (20 problems)', why:'Core interview topics; pattern recognition.', resources:[{title:'NeetCode',url:'https://neetcode.io/practice'}], practice:'Solve 20 problems and push explanations', difficulty:'Medium' }
-    ]
-  },
-
-  {
-    id: 'jan',
-    name: 'January — React Basics + Intermediate DSA',
-    description: 'React fundamentals (Vite), hooks, component design, Tailwind, and intermediate arrays & strings.',
-    weeks: [
-      { title:'Week 1 — React setup & Components', tasks:['Vite setup','JSX & props','Component design'] },
-      { title:'Week 2 — Hooks & Effects', tasks:['useState','useEffect','lifecycles & cleanup'] },
-      { title:'Week 3 — Styling & Tailwind', tasks:['Tailwind setup','component system','Flashcards tool'] },
-      { title:'Week 4 — Project polish & DSA', tasks:['BudgetBee','15 medium array problems'] }
-    ],
-    items: [
-      { id:'react-setup', type:'topic', title:'Vite + React Setup', why:'Faster dev server and modern build tooling.', resources:[{title:'Vite + React',url:'https://vitejs.dev/'}], practice:'Create starter template', difficulty:'Easy' },
-
-      { id:'react-components', type:'topic', title:'React: Components, Props, JSX', why:'Components are the building blocks of UIs; composability matters.', resources:[{title:'React Docs',url:'https://react.dev/learn'}], practice:'Build Quote Generator', difficulty:'Easy' },
-
-      { id:'react-hooks', type:'topic', title:'useState & useEffect', why:'State and side-effects power component behavior.', resources:[], practice:'CineMatch: API + useEffect + pagination', difficulty:'Medium' },
-
-      { id:'proj-quote', type:'project', title:'Quote Generator', why:'Practice fetch + state + components.', resources:[], practice:'Deploy small React app', difficulty:'Easy' },
-
-      { id:'proj-cinematch', type:'project', title:'CineMatch (Movie Browser)', why:'Pagination & search; skeleton loaders.', resources:[], practice:'TMDB integration and UI polish', difficulty:'Medium' },
-
-      { id:'jan-dsa', type:'topic', title:'DSA: Advanced Arrays (15 problems)', why:'Sliding window & prefix sums for medium problems.', resources:[], practice:'Solve 15 problems and write notes', difficulty:'Medium' }
-    ]
-  },
-
-  {
-    id: 'feb',
-    name: 'February — Advanced React, Routing & Linked List DSA',
-    description: 'Context, routing, custom hooks, form validation, TypeScript intro and linked list problems.',
-    weeks:[
-      {title:'Week 1 — Context & Reducer', tasks:['Context API','useReducer patterns']},
-      {title:'Week 2 — Router & Protected Routes', tasks:['React Router v6','Auth flow']},
-      {title:'Week 3 — Custom Hooks & Forms', tasks:['Custom hooks','useRef','Yup validation']},
-      {title:'Week 4 — DSA Linked List', tasks:['Implement linked list','10 LL problems']}
-    ],
-    items:[
-      { id:'context', type:'topic', title:'Context API + useReducer', why:'Lightweight global state for medium apps.', resources:[], practice:'PlanSync (study planner)', difficulty:'Medium' },
-
-      { id:'router', type:'topic', title:'React Router v6', why:'Client-side routing & nested routes.', resources:[], practice:'NoteVerse nested routes', difficulty:'Easy' },
-
-      { id:'custom-hooks', type:'topic', title:'Custom Hooks & useRef', why:'DRY repeated logic & refs for DOM interactions.', resources:[], practice:'StreamBox: create usePlayer hook', difficulty:'Medium' },
-
-      { id:'proj-plansync', type:'project', title:'PlanSync (Study Planner)', why:'State mgmt + reducer patterns.', resources:[], practice:'Add tests for reducer logic', difficulty:'Medium' },
-
-      { id:'feb-dsa', type:'topic', title:'DSA: Linked List (10 problems)', why:'Pointers & memory model; frequent interview problems.', resources:[], practice:'Implement LL ops: reverse, merge, cycle detect', difficulty:'Medium' }
-    ]
-  },
-
-  {
-    id:'mar',
-    name:'March — Backend: Node, Express, MongoDB & DevOps intro',
-    description:'Build secure REST APIs, JWT auth, database design, Docker, Redis caching, and system design basics.',
-    weeks:[
-      {title:'Week1 — Node & Express', tasks:['Event loop','routing & middleware']},
-      {title:'Week2 — Auth & Security', tasks:['JWT','bcrypt','rate-limiting']},
-      {title:'Week3 — MongoDB & Mongoose', tasks:['Schemas','indexes','aggregation']},
-      {title:'Week4 — Docker, Redis & Testing', tasks:['Docker Compose','Jest+Supertest','Redis caching']}
-    ],
-    items:[
-      { id:'node', type:'topic', title:'Node.js Fundamentals', why:'Event loop and async patterns for servers.', resources:[{title:'Node Crash Course',url:'https://www.youtube.com/watch?v=fBNz5xF-Kx4'}], practice:'ServerBase skeleton', difficulty:'Medium' },
-
-      { id:'express', type:'topic', title:'Express.js & REST API design', why:'Routing, middleware & controllers structure.', resources:[], practice:'Build Notes API endpoints', difficulty:'Medium' },
-
-      { id:'authforge', type:'project', title:'AuthForge (JWT Auth API)', why:'Secure signup/login, refresh tokens & secure storage.', resources:[], practice:'Implement refresh tokens + Postman collection', difficulty:'Medium' },
-
-      { id:'notesapi', type:'project', title:'Notes API (MERN)', why:'CRUD + persistence + validation using MongoDB & Mongoose.', resources:[], practice:'Deploy to Render + MongoDB Atlas', difficulty:'Medium' },
-
-      { id:'docker', type:'topic', title:'Docker & Redis basics', why:'Containerization & caching used in production.', resources:[], practice:'Dockerize API and add Redis cache for hot endpoints', difficulty:'Medium' },
-
-      { id:'mar-dsa', type:'topic', title:'DSA: Stack & Queue (15 problems)', why:'LIFO/FIFO patterns used in algorithms and systems.', resources:[], practice:'Solve 15 problems', difficulty:'Medium' }
-    ]
-  },
-
-  {
-    id:'apr',
-    name:'April — MERN Integration, CI/CD, AWS & Flagship Projects',
-    description:'Integrate frontend+backend, set up CI/CD, monitoring, build flagship AI project & system design case studies.',
-    weeks:[
-      {title:'Week1 — Integration & Auth', tasks:['Axios setup','token refresh','protected routes']},
-      {title:'Week2 — Forum & Features', tasks:['CodeTalk forum','pagination','file uploads']},
-      {title:'Week3 — DevOps & Deploy', tasks:['Docker Compose','Nginx','deploy to AWS/Vercel']},
-      {title:'Week4 — Monitoring & Flagship', tasks:['Winston + Sentry','AI Code Review Assistant','architecture docs']}
-    ],
-    items:[
-      { id:'integration', type:'topic', title:'Frontend ↔ Backend integration', why:'Proper auth flows & secure API calls are essential.', resources:[], practice:'SkillSync integrated app', difficulty:'Medium' },
-
-      { id:'codetalk', type:'project', title:'CodeTalk (Developer Forum)', why:'Posts, comments, search, moderation & RBAC; showcases fullstack skills.', resources:[], practice:'Deploy with pagination and file upload', difficulty:'Hard' },
-
-      { id:'habitpulse', type:'project', title:'HabitPulse (Analytics Dashboard)', why:'Telemetry & analytics for product metrics.', resources:[], practice:'Add graphs, metrics & deployment', difficulty:'Hard' },
-
-      { id:'ai-review', type:'project', title:'AI Code Review Assistant', why:'Flagship — shows architecture, OpenAI integration & production readiness.', resources:[{title:'OpenAI API',url:'https://platform.openai.com/docs'}], practice:'Deploy on AWS + CI/CD + monitoring', difficulty:'Hard' },
-
-      { id:'apr-dsa', type:'topic', title:'DSA: Trees (10 problems)', why:'Recursion, traversals & tree algorithms.', resources:[], practice:'Implement traversals, LCA, balance checks', difficulty:'Medium' },
-
-      { id:'sysdesign', type:'topic', title:'System Design Case Studies', why:'High-level architecture for interviews (URL shortener, chat, notifications).', resources:[{title:'System Design Primer',url:'https://github.com/donnemartin/system-design-primer'}], practice:'Create architecture docs and tradeoffs', difficulty:'Hard' },
-
-      { id:'devops-aws', type:'topic', title:'DevOps: Docker, CI/CD, AWS', why:'Deploy, scale, and observe production systems.', resources:[], practice:'Set up GitHub Actions + deploy to EC2/S3/CloudFront', difficulty:'Hard' },
-
-      { id:'monitoring', type:'topic', title:'Monitoring & Logging', why:'Sentry & structured logging for production observability.', resources:[{title:'Sentry',url:'https://sentry.io/'}], practice:'Integrate Sentry & Winston', difficulty:'Medium' },
-
-      { id:'career-oss', type:'topic', title:'OSS Contribution & Resume', why:'Contributing & polished resume increase hireability.', resources:[], practice:'Open a small PR and add resume bullets', difficulty:'Medium' }
-    ]
-  }
-];
-
-// === Persistence keys ===
-const PROG_KEY = 'ebin_progress_v_striver_v1';
-const NOTES_KEY = 'ebin_notes_v_striver_v1';
-
-// load progress & notes
-let progress = {};
-let notes = {};
-try { progress = JSON.parse(localStorage.getItem(PROG_KEY)) || {}; } catch(e){ progress = {}; }
-try { notes = JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; } catch(e){ notes = {}; }
-
-// helpers
-const el = (sel, parent=document) => parent.querySelector(sel);
-const els = (sel, parent=document) => Array.from(parent.querySelectorAll(sel));
-
-function saveProgress(){ localStorage.setItem(PROG_KEY, JSON.stringify(progress)); updateStats(); updateOverall(); }
-function saveNotes(){ localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
-
-function difficultyClass(diff){
-  if(!diff) return 'dif-med';
-  if(diff.toLowerCase().includes('easy')) return 'dif-easy';
-  if(diff.toLowerCase().includes('hard')) return 'dif-hard';
-  return 'dif-med';
-}
-
-// render functions
-const monthsContainer = document.getElementById('monthsList');
-const overallFill = document.getElementById('overallFill');
-const overallText = document.getElementById('overallText');
-const statMonths = document.getElementById('statMonths');
-const statItems = document.getElementById('statItems');
-const statDone = document.getElementById('statDone');
-const statDSA = document.getElementById('statDSA');
-
-function render(){
-  monthsContainer.innerHTML = '';
-  let totalItems = 0, totalDone = 0, dsaCount = 0;
-  ROADMAP.forEach((month, mi) => {
-    // month card
-    const mDiv = document.createElement('div');
-    mDiv.className = 'month';
-    const header = document.createElement('div');
-    header.className = 'month-header';
-    header.innerHTML = `<div>
-      <h2>${month.name}</h2>
-      <div class="month-desc">${month.description}</div>
-    </div>
-    <div style="text-align:right">
-      <div style="font-size:13px;color:var(--muted);">Items: ${month.items.length}</div>
-      <div style="margin-top:6px"><button class="btn" data-action="toggleWeeks">Weeks</button></div>
-    </div>`;
-    mDiv.appendChild(header);
-
-    // month progress
-    const completed = month.items.filter(it => progress[it.id]).length;
-    const pct = month.items.length ? Math.round((completed/month.items.length)*100) : 0;
-    totalItems += month.items.length; totalDone += completed;
-    month.items.forEach(it=>{ if(it.id && it.id.includes('dsa')) dsaCount += 0; if(it.title && it.title.toLowerCase().includes('dsa')) dsaCount += parseInt((it.title.match(/(\d+)/)||['0'])[0]) || 0; });
-
-    const mprog = document.createElement('div'); mprog.className='mprogress'; mprog.innerHTML = `<i style="width:${pct}%"></i>`;
-    mDiv.appendChild(mprog);
-
-    // weeks (collapsible)
-    const weeksDiv = document.createElement('div'); weeksDiv.className = 'step-weeks';
-    weeksDiv.style.display='none';
-    weeksDiv.innerHTML = month.weeks.map(w=>`<div style="margin-top:6px"><strong>${w.title}</strong> — ${w.tasks.join(', ')}</div>`).join('');
-    mDiv.appendChild(weeksDiv);
-
-    // table header
-    const table = document.createElement('div'); table.className='table';
-    const headerRow = document.createElement('div'); headerRow.className='row header';
-    headerRow.innerHTML = `<div></div><div>Topic / Project</div><div>Resources</div><div>Practice / What to build</div><div>Why it matters</div><div>Diff</div><div>Notes</div>`;
-    table.appendChild(headerRow);
-
-    // items
-    month.items.forEach(item=>{
-      const row = document.createElement('div'); row.className='row';
-      // checkbox
-      const chk = document.createElement('input'); chk.type='checkbox'; chk.checked = !!progress[item.id];
-      chk.addEventListener('change', ()=>{
-        progress[item.id] = chk.checked;
-        saveProgress();
-        render(); // re-render to update percentages
-      });
-      const cbWrap = document.createElement('div'); cbWrap.className='checkbox'; cbWrap.appendChild(chk);
-
-      // title
-      const titleCell = document.createElement('div'); titleCell.className='title-cell';
-      titleCell.innerHTML = `<div>${item.title}</div><div class="small">${item.type ? item.type.toUpperCase() : 'TOPIC'} ${item.suggestedTime ? ' • ' + item.suggestedTime : ''}</div>`;
-
-      // resources icons
-      const resCell = document.createElement('div'); resCell.className='resource-icons';
-      if(item.resources && item.resources.length){
-        item.resources.forEach(r=>{
-          const a = document.createElement('a'); a.className='icon doc'; a.href=r.url; a.target='_blank'; a.title=r.title;
-          a.textContent = 'doc'; resCell.appendChild(a);
-        })
-      } else {
-        resCell.innerHTML = '<span style="color:var(--muted);font-size:13px">—</span>';
-      }
-
-      // practice cell
-      const practiceCell = document.createElement('div');
-      practiceCell.innerHTML = item.practice ? item.practice : (item.type==='project' ? 'Build & deploy; push README' : 'Follow resources & practice');
-      // why cell
-      const whyCell = document.createElement('div'); whyCell.className='small'; whyCell.textContent = item.why || '';
-
-      // difficulty
-      const diffCell = document.createElement('div');
-      const diffBadge = document.createElement('div'); diffBadge.className='difficulty ' + difficultyClass(item.difficulty || 'Medium'); diffBadge.textContent = item.difficulty || (item.type==='project' ? 'Hard' : 'Medium');
-      diffCell.appendChild(diffBadge);
-
-      // notes
-      const notesCell = document.createElement('div');
-      const noteTxt = notes[item.id] || '';
-      const ta = document.createElement('textarea'); ta.className='notes'; ta.value = noteTxt;
-      ta.addEventListener('change', ()=>{ notes[item.id] = ta.value; saveNotes(); });
-      notesCell.appendChild(ta);
-
-      // make columns
-      row.appendChild(cbWrap);
-      const colTitle = document.createElement('div'); colTitle.appendChild(titleCell); row.appendChild(colTitle);
-      const colRes = document.createElement('div'); colRes.appendChild(resCell); row.appendChild(colRes);
-      const colPractice = document.createElement('div'); colPractice.appendChild(practiceCell); row.appendChild(colPractice);
-      const colWhy = document.createElement('div'); colWhy.appendChild(whyCell); row.appendChild(colWhy);
-      const colDiff = document.createElement('div'); colDiff.appendChild(diffBadge); row.appendChild(colDiff);
-      const colNotes = document.createElement('div'); colNotes.appendChild(notesCell); row.appendChild(colNotes);
-
-      // detail clicking: title double-click opens modal
-      titleCell.addEventListener('dblclick', ()=> openModal(item));
-
-      table.appendChild(row);
-    });
-
-    mDiv.appendChild(table);
-    monthsContainer.appendChild(mDiv);
-
-    // toggle weeks
-    header.querySelector('[data-action=toggleWeeks]').addEventListener('click', ()=> {
-      weeksDiv.style.display = weeksDiv.style.display === 'none' ? 'block' : 'none';
-    });
-
-  });
-
-  // update stats & overall
-  const percent = totalItems ? Math.round((totalDone/totalItems)*100) : 0;
-  overallFill.style.width = percent + '%';
-  overallText.textContent = percent + '%';
-  statMonths.textContent = ROADMAP.length;
-  statItems.textContent = totalItems;
-  statDone.textContent = totalDone;
-  statDSA.textContent = dsaCount || '—';
-}
-
-// modal
-const modal = document.getElementById('modal');
-const mdTitle = document.getElementById('mdTitle');
-const mdType = document.getElementById('mdType');
-const mdWhy = document.getElementById('mdWhy');
-const mdPractice = document.getElementById('mdPractice');
-const mdResources = document.getElementById('mdResources');
-const mdNotes = document.getElementById('mdNotes');
-const mdClose = document.getElementById('mdClose');
-const mdSave = document.getElementById('mdSave');
-
-function openModal(item){
-  mdTitle.textContent = item.title;
-  mdType.textContent = (item.type||'TOPIC') + (item.suggestedTime ? ' • ' + item.suggestedTime : '');
-  mdWhy.textContent = 'Why: ' + (item.why || '—');
-  mdPractice.textContent = 'Practice: ' + (item.practice || '—');
-  mdResources.innerHTML = '';
-  if(item.resources && item.resources.length){
-    const ul = document.createElement('ul');
-    item.resources.forEach(r=>{
-      const li = document.createElement('li'); li.innerHTML = `<a href="${r.url}" target="_blank" style="color:#60a5fa">${r.title}</a>`;
-      ul.appendChild(li);
-    });
-    mdResources.appendChild(ul);
-  } else {
-    mdResources.textContent = 'No external resources provided.';
-  }
-  mdNotes.value = notes[item.id] || '';
-  modal.style.display = 'flex';
-  // save action binds
-  mdSave.onclick = ()=>{
-    notes[item.id] = mdNotes.value;
-    saveNotes();
-    modal.style.display = 'none';
-    render(); // refresh to show note preview
-  };
-}
-
-mdClose.onclick = ()=> modal.style.display = 'none';
-modal.addEventListener('click', (e)=>{ if(e.target === modal) modal.style.display='none'; });
-
-// search
-document.getElementById('search').addEventListener('input', function(){
-  const q = this.value.trim().toLowerCase();
-  document.querySelectorAll('.row').forEach(row=>{
-    if(row.classList.contains('header')) return;
-    const title = row.querySelector('.item-title').textContent.toLowerCase();
-    const why = row.querySelector('.item-why').textContent.toLowerCase();
-    row.style.display = (title.includes(q) || why.includes(q)) ? 'grid' : 'none';
-  });
-});
-
-// quick actions
-document.getElementById('markAll').addEventListener('click', ()=>{
-  ROADMAP.forEach(m=>m.items.forEach(it=> progress[it.id] = true));
-  saveProgress(); render();
-});
-document.getElementById('clearAll').addEventListener('click', ()=>{
-  ROADMAP.forEach(m=>m.items.forEach(it=> progress[it.id] = false));
-  saveProgress(); render();
-});
-document.getElementById('expandAll').addEventListener('click', ()=>{
-  document.querySelectorAll('.step-weeks').forEach(s=> s.style.display = 'block');
-});
-
-// initial render
-render();
-</script>
-</body>
-</html>
+); }
