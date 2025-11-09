@@ -1,434 +1,288 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Ebin — Complete Week-by-Week MAANG Roadmap (Dec→Apr)</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ebin Tracker — Striver-style MAANG Roadmap</title>
 <style>
 :root{
-  --bg:#071026; --panel:#0f1724; --card:#0b1220; --muted:#94a3b8; --accent:#f97316;
-  --easy:#10b981; --med:#3b82f6; --hard:#ef4444; --txt:#e6eef8;
+  --bg:#0b1220; --card:#0f1724; --panel:#111827; --muted:#9ca3af; --accent:#f97316;
+  --easy:#10b981; --medium:#3b82f6; --hard:#ef4444; --text:#e6eef8;
 }
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--txt);padding:18px}
+body{margin:0; font-family:Inter,system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; background:var(--bg); color:var(--text); padding:20px;}
 .container{max-width:1200px;margin:0 auto}
-.header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start}
-.title{min-width:220px;flex:1}
-.title h1{margin:0;font-size:20px}
-.lead{color:var(--muted);margin-top:6px;font-size:13px}
-.controls{width:340px;min-width:200px}
-.search{width:100%;padding:8px;border-radius:8px;border:none;background:rgba(255,255,255,0.03);color:var(--txt)}
-.top-stats{display:flex;align-items:center;gap:12px;margin-top:10px}
-.progress-bar{height:10px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;width:200px}
+.header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.title{max-width:760px}
+.title h1{margin:0;font-size:22px}
+.title p{margin:6px 0 0;color:var(--muted);font-size:13px}
+.top-controls{width:380px}
+.search{width:100%;padding:8px;border-radius:6px;border:none;background:rgba(255,255,255,0.03);color:var(--text)}
+.stats-row{display:flex;gap:12px;align-items:center;margin-top:10px}
+.progress-bar{height:10px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;width:260px}
 .progress-bar > i{display:block;height:100%;background:var(--accent);width:0%;transition:width .25s}
-.grid{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:18px}
-.month{background:var(--card);padding:12px;border-radius:8px;margin-bottom:12px}
-.month-header{display:flex;justify-content:space-between;align-items:center}
+.grid{display:grid;grid-template-columns:2fr 360px;gap:20px;margin-top:20px}
+.col{background:var(--card);padding:14px;border-radius:10px}
+.month{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:12px}
+.month-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.month-header h2{margin:0;font-size:16px}
 .month-desc{color:var(--muted);font-size:13px;margin-top:6px}
-.week{background:rgba(255,255,255,0.01);margin-top:10px;padding:10px;border-radius:8px}
-.week-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.wbar{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:8px}
-.wbar>i{height:100%;background:#2563eb;width:0%;transition:width .25s}
+.mprogress{height:8px;background:rgba(255,255,255,0.03);border-radius:999px;overflow:hidden;margin-top:10px}
+.mprogress > i{height:100%;background:#2563eb;width:0%}
+.step-weeks{margin-top:10px;color:var(--muted);font-size:13px}
 .table{margin-top:10px;border-top:1px solid rgba(255,255,255,0.03);font-size:14px}
-.row{display:grid;grid-template-columns:44px 1fr 110px 220px 220px 86px 1fr;gap:8px;align-items:start;padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)}
-.row.head{font-size:12px;color:var(--muted);background:rgba(255,255,255,0.01);font-weight:700}
+.row{display:grid;grid-template-columns:40px 1fr 120px 220px 160px 86px 1fr;gap:8px;align-items:start;padding:10px;border-bottom:1px solid rgba(255,255,255,0.02)}
+.row.header{font-size:12px;color:var(--muted);background:rgba(255,255,255,0.01);font-weight:600}
 .checkbox{display:flex;align-items:center;justify-content:center}
 .title-cell{font-weight:600}
 .small{font-size:13px;color:var(--muted);margin-top:6px}
-.res-icons{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.icon{width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:white;text-decoration:none}
-.icon.yt{background:#ff3b30}
-.icon.doc{background:#06b6d4}
-.icon.api{background:#94a3b8}
-.icon.md{background:#0ea5a4}
-.diff{padding:6px 8px;border-radius:999px;font-size:12px;font-weight:700;color:#000;display:inline-block}
-.diff.easy{background:var(--easy)}
-.diff.med{background:var(--med)}
-.diff.hard{background:var(--hard)}
-.btn{padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.03);color:var(--txt);border:none;cursor:pointer}
-.btn.primary{background:var(--accent);color:#08111a}
-.notes{background:rgba(255,255,255,0.02);padding:6px;border-radius:6px;color:var(--muted);font-size:13px;min-height:44px}
+.resource-icons{display:flex;gap:8px}
+.icon{width:20px;height:20px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+.icon.yt{background:#ff3b3b;color:white}
+.icon.doc{background:#0ea5a4;color:white}
+.icon.code{background:#94a3b8;color:white}
+.difficulty{padding:6px 8px;border-radius:999px;font-size:12px;color:black;font-weight:700}
+.dif-easy{background:var(--easy)}
+.dif-med{background:var(--medium)}
+.dif-hard{background:var(--hard)}
+.btn{padding:6px 8px;border-radius:6px;background:rgba(255,255,255,0.03);color:var(--text);border:none;cursor:pointer}
+.btn.orange{background:var(--accent);color:#08111a}
+.notes{background:rgba(255,255,255,0.02);padding:6px;border-radius:6px;color:var(--muted);font-size:13px}
 .aside .card{background:var(--panel);padding:12px;border-radius:8px;margin-bottom:12px}
 .kv{display:flex;justify-content:space-between;color:var(--muted);font-size:13px;margin-top:6px}
 .footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-.modal{position:fixed;inset:0;background:rgba(2,6,23,0.7);display:none;align-items:center;justify-content:center;z-index:90}
-.modal-box{background:var(--panel);padding:16px;border-radius:10px;width:760px;max-width:96%}
-input[type="text"], textarea{background:rgba(255,255,255,0.02);border:none;color:var(--txt);padding:8px;border-radius:6px}
-@media(max-width:980px){ .grid{grid-template-columns:1fr 300px} .row{grid-template-columns:44px 1fr 100px 1fr} }
-@media(max-width:700px){ .grid{grid-template-columns:1fr} .row{grid-template-columns:36px 1fr} .row.head{display:none} }
+@media(max-width:980px){.grid{grid-template-columns:1fr}.top-controls{width:100%}}
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="title">
-      <h1>EBIN — Complete Week-by-Week MAANG Roadmap (Dec → Apr)</h1>
-      <div class="lead">3 hrs/day weekdays + 5 hrs/day weekends. Track progress, notes, and resources here.</div>
-      <div class="top-stats" style="margin-top:10px">
-        <div style="font-size:13px;color:var(--muted)">Overall</div>
-        <div class="progress-bar"><i id="overallFill"></i></div>
-        <div id="overallText" style="font-size:13px;color:var(--muted)">0%</div>
-      </div>
-    </div>
+  <div class="header">
+    <div class="title">
+      <h1>EBIN TRACKER — A2Z MAANG Full-Stack Roadmap</h1>
+      <p>From beginner → MAANG-level full-stack in 5 months (Dec → Apr). Follow weekly steps, build projects, solve DSA, deploy.</p>
+      <div class="stats-row">
+        <div style="font-size:13px;color:var(--muted)">Overall progress</div>
+        <div class="progress-bar"><i id="overallFill"></i></div>
+        <div id="overallText" style="font-size:13px;color:var(--muted)">0%</div>
+      </div>
+    </div>
 
-    <div class="controls">
-      <input id="search" class="search" placeholder="Search topics, projects, why, resources..." />
-      <div style="display:flex;gap:8px;margin-top:10px">
-        <button id="markAll" class="btn primary">Mark All</button>
-        <button id="clearAll" class="btn">Clear All</button>
-        <button id="expandAll" class="btn">Expand Weeks</button>
-      </div>
-      <div style="margin-top:8px;font-size:12px;color:var(--muted)">Tip: double-click a title to open details & notes modal.</div>
-    </div>
-  </div>
+    <div class="top-controls">
+      <input id="search" class="search" placeholder="Search topics, projects, resources, why..." />
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="markAll" class="btn orange">Mark All</button>
+        <button id="clearAll" class="btn">Clear All</button>
+        <button id="expandAll" class="btn">Expand All</button>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)">Progress & notes saved locally in your browser.</div>
+    </div>
+  </div>
 
-  <div class="grid" style="margin-top:18px">
-    <div id="leftCol"></div>
+  <div class="grid" id="mainGrid">
+    <div>
+      <!-- Left column months -->
+      <div id="monthsList"></div>
+      <div class="footer">Built for Ebin — adapt topics or resources in the code anytime.</div>
+    </div>
 
-    <aside class="aside">
-      <div class="card aside-card">
-        <h3>Quick Stats</h3>
-        <div class="kv"><span>Total Months</span><span id="statMonths">0</span></div>
-        <div class="kv"><span>Total Items</span><span id="statItems">0</span></div>
-        <div class="kv"><span>Completed</span><span id="statDone">0</span></div>
-        <div class="kv"><span>DSA problems</span><span id="statDSA">0</span></div>
-      </div>
+    <aside class="aside">
+      <div class="card">
+        <h3>Quick Stats</h3>
+        <div class="kv"><span>Total Months</span><span id="statMonths">0</span></div>
+        <div class="kv"><span>Total Items</span><span id="statItems">0</span></div>
+        <div class="kv"><span>Completed</span><span id="statDone">0</span></div>
+        <div class="kv"><span>DSA Problems</span><span id="statDSA">0</span></div>
+      </div>
 
-      <div class="card">
-        <h3>Career Actions</h3>
-        <div class="small">• Weekly Loom demo (2–3 min)<br>• Weekly blog/LinkedIn post<br>• Add bullets + metrics to resume<br>• Mock interviews: Mar–Apr</div>
-      </div>
+      <div class="card">
+        <h3>Career Actions / Checklist</h3>
+        <div class="small">
+          • Weekly Loom demo (3 min)<br>
+          • Blog post / LinkedIn summary weekly<br>
+          • PR etiquette: small PRs, clear messages<br>
+          • Mock interviews: schedule 3 in March/April
+        </div>
+      </div>
 
-      <div class="card">
-        <h3>System Design & DevOps</h3>
-        <div class="small">Study URL shortener, chat service, notifications. Dockerize and set up CI/CD (GitHub Actions).</div>
-      </div>
+      <div class="card">
+        <h3>System Design & DevOps</h3>
+        <div class="small">
+          Study URL shortener, Chat app, Notification service. Dockerize apps. Setup CI/CD (GitHub Actions). Deploy to AWS (EC2 & S3).
+        </div>
+      </div>
 
-      <div class="card">
-        <h3>Mentor Tips</h3>
-        <div class="small">Keep components small, test reducers, document one challenge per project in README, record demo videos.</div>
-      </div>
-    </aside>
-  </div>
+      <div class="card">
+        <h3>Mentor Tips</h3>
+        <div class="small">
+          Keep components small; write tests for reducers; document one challenge in README per project; record a 3-minute demo weekly.
+        </div>
+      </div>
+    </aside>
+  </div>
 </div>
 
-<!-- Modal -->
-<div id="modal" class="modal">
-  <div class="modal-box">
-    <div style="display:flex;justify-content:space-between;align-items:start">
-      <div>
-        <div id="mdTitle" style="font-weight:700;font-size:16px"></div>
-        <div id="mdType" style="color:var(--muted);margin-top:6px"></div>
-      </div>
-      <div><button id="mdClose" class="btn">Close</button></div>
-    </div>
-    <div id="mdWhy" style="margin-top:12px;color:var(--muted)"></div>
-    <div id="mdPractice" style="margin-top:8px;color:var(--muted)"></div>
-    <div id="mdResources" style="margin-top:10px"></div>
-    <div style="margin-top:10px"><textarea id="mdNotes" placeholder="Personal notes..."></textarea></div>
-    <div style="text-align:right;margin-top:8px"><button id="mdSave" class="btn primary">Save Note</button></div>
-  </div>
+<!-- Details modal -->
+<div id="modal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.7);align-items:center;justify-content:center;z-index:80">
+  <div style="background:var(--panel);padding:16px;border-radius:10px;width:780px;max-width:96%">
+    <div style="display:flex;justify-content:space-between;align-items:start">
+      <div>
+        <div id="mdTitle" style="font-weight:700;font-size:16px"></div>
+        <div id="mdType" style="color:var(--muted);margin-top:6px;font-size:13px"></div>
+      </div>
+      <div>
+        <button id="mdClose" class="btn">Close</button>
+      </div>
+    </div>
+    <div id="mdWhy" style="margin-top:12px;color:var(--muted)"></div>
+    <div id="mdPractice" style="margin-top:8px;color:var(--muted)"></div>
+    <div id="mdResources" style="margin-top:10px"></div>
+    <div style="margin-top:8px">
+      <textarea id="mdNotes" placeholder="Add personal notes..." style="width:100%;min-height:80px;background:#071226;color:var(--text);border-radius:6px;padding:8px;border:none"></textarea>
+      <div style="text-align:right;margin-top:8px"><button id="mdSave" class="btn orange">Save Note</button></div>
+    </div>
+  </div>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  // Full roadmap data (exact as final roadmap, with each week assigned one existing project)
-  const ROADMAP = [
-    {
-      id:'dec', name:'December — Frontend Core + JavaScript Foundations',
-      description:'HTML, CSS, JS, DOM, Fetch API, accessibility, performance, Git basics, and DSA foundations.',
-      weeks:[
-        { id:'dec-w1', title:'Week 1 — HTML & CSS', items:[
-          { id:'dec-html', type:'topic', title:'HTML & Semantic Markup', why:'Accessibility, SEO, structure.', resources:[{title:'Traversy: HTML Crash Course',url:'https://www.youtube.com/watch?v=UB1O30fR-EE'},{title:'MDN: HTML basics',url:'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML'}], practice:'Interactive Resume Page (deploy)', difficulty:'Easy', project:'Interactive Resume Page' },
-          { id:'dec-css-box', type:'topic', title:'CSS: Box Model & Selectors', why:'Prevent layout bugs.', resources:[{title:'MDN CSS',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS'}], practice:'Style resume & portfolio', difficulty:'Easy', project:'Interactive Resume Page' },
-          { id:'dec-flexgrid', type:'topic', title:'Flexbox & Grid', why:'Modern responsive layout.', resources:[{title:'Flexbox Froggy',url:'https://flexboxfroggy.com/'},{title:'Kevin Powell Grid',url:'https://www.youtube.com/watch?v=9zBsdzdE4sM'}], practice:'Create responsive grid', difficulty:'Easy', project:'Interactive Resume Page' },
-          { id:'dec-responsive', type:'topic', title:'Responsive Design & Media Queries', why:'Mobile-first approach.', resources:[{title:'Responsive MDN',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Media_queries'}], practice:'Make portfolio mobile-friendly', difficulty:'Easy', project:'Interactive Resume Page' }
-        ]},
-        { id:'dec-w2', title:'Week 2 — JavaScript & DOM', items:[
-          { id:'dec-js', type:'topic', title:'JavaScript ES6+ Basics', why:'Language features for React/Node.', resources:[{title:'freeCodeCamp JS Full',url:'https://www.youtube.com/watch?v=PkZNo7MFNFg'},{title:'JavaScript.info',url:'https://javascript.info/'}], practice:'map/filter/reduce', difficulty:'Easy', project:'TempoTimer' },
-          { id:'dec-dom', type:'topic', title:'DOM Manipulation & Events', why:'UI updates before React.', resources:[{title:'JS.info DOM',url:'https://javascript.info/dom-nodes'}], practice:'To-Do app with localStorage', difficulty:'Medium', project:'TempoTimer' },
-          { id:'proj-tempotimer', type:'project', title:'TempoTimer', why:'Intervals & state updates', resources:[], practice:'Start/pause/reset + lap', difficulty:'Medium', project:'TempoTimer' }
-        ]},
-        { id:'dec-w3', title:'Week 3 — Async & APIs', items:[
-          { id:'dec-fetch', type:'topic', title:'Fetch API & async/await', why:'Server communication & error handling.', resources:[{title:'MDN Fetch',url:'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API'}], practice:'Fetch wrapper with retries', difficulty:'Medium', project:'Weather Insight App' },
-          { id:'proj-weather', type:'project', title:'Weather Insight App', why:'API integration & UI states', resources:[{title:'OpenWeather API',url:'https://openweathermap.org/api'}], practice:'Debounced search + cache', difficulty:'Medium', project:'Weather Insight App' },
-          { id:'dec-postman', type:'topic', title:'Postman & API testing', why:'Validate endpoints and debug.', resources:[{title:'Postman docs',url:'https://learning.postman.com/docs/getting-started/introduction/'}], practice:'Create collection', difficulty:'Easy', project:'Weather Insight App' }
-        ]},
-        { id:'dec-w4', title:'Week 4 — DSA: Arrays & Strings', items:[
-          { id:'dec-dsa', type:'topic', title:'DSA: Arrays & Strings (20 problems)', why:'Core interview patterns.', resources:[{title:'NeetCode Arrays',url:'https://neetcode.io/practice'}], practice:'Solve 20 problems & document', difficulty:'Medium', project:'Portfolio Showcase' },
-          { id:'proj-portfolio', type:'project', title:'Portfolio Showcase', why:'Showcase & DSA evidence', resources:[], practice:'Add DSA section & polish', difficulty:'Medium', project:'Portfolio Showcase' }
-        ]}
-      ]
-    },
+// === MASTER ROADMAP DATA (complete) ===
+// Each month has weeks array and items array containing full topics, projects, DSA, DevOps, career tasks etc.
+// This is the canonical content from our conversation.
+const ROADMAP = [
+  {
+    id: 'dec',
+    name: 'December — Frontend Core + JavaScript Foundations',
+    description: 'HTML, CSS, JavaScript core, DOM, Fetch API, accessibility, performance, Git basics, and DSA foundations (Arrays & Strings).',
+    weeks: [
+      { title: 'Week 1 — HTML & CSS', tasks: ['HTML semantics', 'Box model & selectors', 'Flexbox & Grid', 'Responsive design', 'Accessibility & Lighthouse'] },
+      { title: 'Week 2 — JavaScript & DOM', tasks: ['ES6 basics', 'DOM manipulation', 'Events & localStorage', 'TempoTimer project'] },
+      { title: 'Week 3 — Async & APIs', tasks: ['Fetch API', 'OpenWeather integration', 'Postman basics'] },
+      { title: 'Week 4 — DSA Foundations', tasks: ['Arrays patterns', 'String problems (20 problems)'] }
+    ],
+    items: [
+      { id:'dec-html', type:'topic', title:'HTML & Semantic Markup', why:'Semantic HTML improves accessibility and SEO; provides clear structure for components.', resources:[{title:'Traversy: HTML Crash Course',url:'https://www.youtube.com/watch?v=UB1O30fR-EE'},{title:'MDN: HTML Basics',url:'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML'}], practice:'Build Interactive Resume page and deploy to GitHub Pages', difficulty:'Easy' },
 
-    {
-      id:'jan', name:'January — React Basics + Intermediate DSA',
-      description:'React fundamentals, hooks, component design, Tailwind, and medium arrays DSA.',
-      weeks:[
-        { id:'jan-w1', title:'Week 1 — React Fundamentals', items:[
-          { id:'vite-setup', type:'topic', title:'Vite + React Setup', why:'Fast dev tooling.', resources:[{title:'Vite docs',url:'https://vitejs.dev/'}], practice:'Create starter app', difficulty:'Easy', project:'Quote Generator' },
-          { id:'react-components', type:'topic', title:'React: Components, Props & JSX', why:'Reusable UI blocks.', resources:[{title:'React docs',url:'https://react.dev/learn'}], practice:'Build Quote Generator', difficulty:'Easy', project:'Quote Generator' }
-        ]},
-        { id:'jan-w2', title:'Week 2 — Hooks & API', items:[
-          { id:'useState-effect', type:'topic', title:'useState & useEffect', why:'State & side-effects.', resources:[], practice:'CineMatch: API + useEffect', difficulty:'Medium', project:'CineMatch' },
-          { id:'proj-cinematch', type:'project', title:'CineMatch (Movie Browser)', why:'Pagination & API integration', resources:[{title:'TMDB API',url:'https://developers.themoviedb.org/3/getting-started/introduction'}], practice:'TMDB integration, pagination', difficulty:'Medium', project:'CineMatch' }
-        ]},
-        { id:'jan-w3', title:'Week 3 — Styling & Components', items:[
-          { id:'tailwind', type:'topic', title:'Tailwind CSS', why:'Utility-first styling.', resources:[{title:'Tailwind docs',url:'https://tailwindcss.com/docs/installation'}], practice:'Create component library', difficulty:'Easy', project:'Flashcards Tool' },
-          { id:'proj-flashcards', type:'project', title:'Flashcards Tool', why:'CRUD & component reuse', resources:[], practice:'Card flip + persistence', difficulty:'Medium', project:'Flashcards Tool' }
-        ]},
-        { id:'jan-w4', title:'Week 4 — Application + DSA', items:[
-          { id:'proj-budgetbee', type:'project', title:'BudgetBee (Expense Tracker)', why:'Aggregation & state patterns', resources:[], practice:'Transactions, totals & mini-chart', difficulty:'Medium', project:'BudgetBee' },
-          { id:'jan-dsa', type:'topic', title:'DSA: Advanced Arrays (15 problems)', why:'Sliding window & prefix sums', resources:[{title:'NeetCode',url:'https://neetcode.io/practice'}], practice:'Solve 15 problems', difficulty:'Medium', project:'BudgetBee' }
-        ]}
-      ]
-    },
+      { id:'dec-css-box', type:'topic', title:'CSS: Box Model & Selectors', why:'Fundamental CSS mechanics prevent layout bugs.', resources:[{title:'MDN CSS',url:'https://developer.mozilla.org/en-US/docs/Learn/CSS'}], practice:'Style resume and portfolio', difficulty:'Easy' },
 
-    {
-      id:'feb', name:'February — Advanced React, Routing & Linked List DSA',
-      description:'Context, Router, custom hooks, validation and Linked List practice.',
-      weeks:[
-        { id:'feb-w1', title:'Week 1 — Context & Reducers', items:[
-          { id:'context', type:'topic', title:'Context API + useReducer', why:'Global state without heavy libs', resources:[{title:'React Context',url:'https://react.dev/reference/react/useContext'}], practice:'PlanSync study planner', difficulty:'Medium', project:'PlanSync' }
-        ]},
-        { id:'feb-w2', title:'Week 2 — Routing & Protected Routes', items:[
-          { id:'router', type:'topic', title:'React Router v6', why:'Nested & protected routes', resources:[{title:'React Router',url:'https://reactrouter.com/en/main'}], practice:'NoteVerse nested routes', difficulty:'Easy', project:'NoteVerse' }
-        ]},
-        { id:'feb-w3', title:'Week 3 — Custom Hooks & Forms', items:[
-          { id:'custom-hooks', type:'topic', title:'Custom Hooks & useRef', why:'DRY logic & DOM refs', resources:[], practice:'StreamBox usePlayer hook', difficulty:'Medium', project:'StreamBox' },
-          { id:'forms', type:'topic', title:'Form Validation (Yup)', why:'Reliable validation patterns', resources:[{title:'Yup',url:'https://github.com/jquense/yup'}], practice:'Add validation to PlanSync', difficulty:'Medium', project:'PlanSync' }
-        ]},
-        { id:'feb-w4', title:'Week 4 — LinkedList DSA', items:[
-          { id:'feb-dsa', type:'topic', title:'DSA: Linked List (10 problems)', why:'Pointer & memory model problems', resources:[], practice:'Reverse, cycle-detect, merge', difficulty:'Medium', project:'TaskMind' },
-          { id:'proj-taskmind', type:'project', title:'TaskMind (Trello-style board)', why:'Drag & drop, CRUD & UX', resources:[], practice:'Columns, reorder, persistence', difficulty:'Medium', project:'TaskMind' }
-        ]}
-      ]
-    },
+      { id:'dec-flexgrid', type:'topic', title:'Flexbox & Grid', why:'Modern layout tools for responsive UIs.', resources:[{title:'Flexbox Froggy',url:'https://flexboxfroggy.com/'},{title:'Kevin Powell Grid',url:'https://www.youtube.com/watch?v=9zBsdzdE4sM'}], practice:'Create responsive portfolio grid', difficulty:'Easy' },
 
-    {
-      id:'mar', name:'March — Backend: Node, Express, MongoDB & DevOps intro',
-      description:'Build secure REST APIs, auth, DB design, Docker, Redis and testing.',
-      weeks:[
-        { id:'mar-w1', title:'Week 1 — Node & Express', items:[
-          { id:'node', type:'topic', title:'Node.js Fundamentals', why:'Event loop & async patterns', resources:[{title:'Node Crash Course',url:'https://www.youtube.com/watch?v=fBNz5xF-Kx4'}], practice:'ServerBase skeleton', difficulty:'Medium', project:'ServerBase' },
-          { id:'express', type:'topic', title:'Express.js & REST Design', why:'Routing & middleware structure', resources:[{title:'Express Guide',url:'https://expressjs.com/en/starter/guide.html'}], practice:'Notes API endpoints', difficulty:'Medium', project:'ServerBase' }
-        ]},
-        { id:'mar-w2', title:'Week 2 — Auth & Security', items:[
-          { id:'authforge', type:'project', title:'AuthForge (JWT Auth API)', why:'Signup/login, refresh tokens & secure storage', resources:[{title:'JWT Intro',url:'https://jwt.io/introduction/'},{title:'OWASP',url:'https://owasp.org/'}], practice:'Implement refresh tokens & Postman tests', difficulty:'Medium', project:'AuthForge' }
-        ]},
-        { id:'mar-w3', title:'Week 3 — MongoDB & Mongoose', items:[
-          { id:'mongo', type:'topic', title:'MongoDB & Mongoose', why:'Schemas, indexing & aggregation', resources:[{title:'MongoDB University',url:'https://university.mongodb.com/'},{title:'Mongoose Docs',url:'https://mongoosejs.com/docs/guide.html'}], practice:'Model users & notes', difficulty:'Medium', project:'Notes API' }
-        ]},
-        { id:'mar-w4', title:'Week 4 — Docker, Redis & Tests', items:[
-          { id:'docker', type:'topic', title:'Docker & Redis basics', why:'Containerization & caching', resources:[{title:'Docker Docs',url:'https://docs.docker.com/get-started/'},{title:'Redis Docs',url:'https://redis.io/docs/'}], practice:'Dockerize APIs; add Redis cache', difficulty:'Medium', project:'TaskStream API' },
-          { id:'testing', type:'topic', title:'Testing APIs (Jest + Supertest)', why:'Regression & confidence', resources:[{title:'Jest',url:'https://jestjs.io/docs/getting-started'}], practice:'Integration tests', difficulty:'Medium', project:'TaskStream API' },
-          { id:'mar-dsa', type:'topic', title:'DSA: Stack & Queue (15 problems)', why:'LIFO/FIFO patterns', resources:[], practice:'Solve 15 problems', difficulty:'Medium', project:'TaskStream API' }
-        ]}
-      ]
-    },
+      { id:'dec-responsive', type:'topic', title:'Responsive Design & Media Queries', why:'Mobile-first is industry standard, test across devices.', resources:[], practice:'Make portfolio mobile-friendly', difficulty:'Easy' },
 
-    {
-      id:'apr', name:'April — MERN Integration, CI/CD, AWS & Flagship Projects',
-      description:'Fullstack integration, CI/CD, monitoring, flagship AI project and system design study.',
-      weeks:[
-        { id:'apr-w1', title:'Week 1 — Integration & Auth flows', items:[
-          { id:'integration', type:'topic', title:'Frontend ↔ Backend Integration', why:'Auth flows, interceptors & protected routes', resources:[{title:'Axios docs',url:'https://axios-http.com/docs/intro'}], practice:'SkillSync integration + token refresh', difficulty:'Medium', project:'SkillSync' }
-        ]},
-        { id:'apr-w2', title:'Week 2 — Forum & Features', items:[
-          { id:'codetalk', type:'project', title:'CodeTalk (Developer Forum)', why:'Posts, comments, search & RBAC', resources:[], practice:'Pagination, moderation & deploy', difficulty:'Hard', project:'CodeTalk' }
-        ]},
-        { id:'apr-w3', title:'Week 3 — DevOps & Deploy', items:[
-          { id:'devops', type:'topic', title:'Docker Compose, Nginx & Deploy', why:'Multi-service stacks in prod', resources:[{title:'Docker Compose',url:'https://docs.docker.com/compose/'},{title:'Nginx',url:'https://nginx.org/en/docs/'}], practice:'Compose + deploy', difficulty:'Hard', project:'HabitPulse' },
-          { id:'cicd', type:'topic', title:'CI/CD: GitHub Actions', why:'Automate tests & deploys', resources:[{title:'GitHub Actions',url:'https://docs.github.com/en/actions'}], practice:'Create test+deploy workflow', difficulty:'Hard', project:'HabitPulse' }
-        ]},
-        { id:'apr-w4', title:'Week 4 — Monitoring & Flagship', items:[
-          { id:'monitoring', type:'topic', title:'Monitoring & Logging (Sentry)', why:'Observability for production', resources:[{title:'Sentry',url:'https://sentry.io/'}], practice:'Integrate Sentry & structured logs', difficulty:'Medium', project:'AI Code Review Assistant' },
-          { id:'ai', type:'project', title:'AI Code Review Assistant', why:'Flagship — architecture + OpenAI integration + infra', resources:[{title:'OpenAI API',url:'https://platform.openai.com/docs'}], practice:'POC + CI/CD + demo', difficulty:'Hard', project:'AI Code Review Assistant' },
-          { id:'apr-dsa', type:'topic', title:'DSA: Trees (10 problems)', why:'Recursion & traversals', resources:[], practice:'Traversals, LCA, balance checks', difficulty:'Medium', project:'AI Code Review Assistant' },
-          { id:'sysdesign', type:'topic', title:'System Design Case Studies', why:'Design for scale; tradeoffs', resources:[{title:'System Design Primer',url:'https://github.com/donnemartin/system-design-primer'}], practice:'Architecture diagrams & docs', difficulty:'Hard', project:'AI Code Review Assistant' },
-          { id:'career-oss', type:'topic', title:'OSS & Resume Polish', why:'Contributions & metrics improve hireability', resources:[], practice:'Open PR; refine bullets', difficulty:'Medium', project:'AI Code Review Assistant' }
-        ]}
-      ]
-    }
-  ];
+      { id:'dec-access', type:'topic', title:'Accessibility (A11y) & SEO basics', why:'Inclusive products and recruiter checks; improves reach.', resources:[{title:'web.dev A11y',url:'https://web.dev/learn/accessibility/'}], practice:'Run Lighthouse, fix issues', difficulty:'Medium' },
 
-  // Persistence
-  const PROG_KEY = 'ebin_complete_progress_v1';
-  const NOTES_KEY = 'ebin_complete_notes_v1';
-  let progress = {}, notes = {};
-  try{ progress = JSON.parse(localStorage.getItem(PROG_KEY)) || {}; }catch(e){ progress = {}; }
-  try{ notes = JSON.parse(localStorage.getItem(NOTES_KEY)) || {}; }catch(e){ notes = {}; }
+      { id:'dec-perf', type:'topic', title:'Performance Basics', why:'Faster apps mean better UX and lower infra cost.', resources:[{title:'web.dev performance',url:'https://web.dev/performance/'}], practice:'Optimize images, lazy-load assets', difficulty:'Medium' },
 
-  // Helpers
-  const $ = (s,p=document)=>p.querySelector(s);
-  const $$ = (s,p=document)=>Array.from(p.querySelectorAll(s));
-  function saveProgress(){ localStorage.setItem(PROG_KEY, JSON.stringify(progress)); updateStats(); updateOverall(); }
-  function saveNotes(){ localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); }
+      { id:'proj-resume', type:'project', title:'Interactive Resume Page', why:'First portfolio piece with deployment, responsive layout and accessibility.', resources:[], practice:'Deploy with GitHub Pages; include screenshots & README', difficulty:'Medium' },
 
-  function resourceIconEl(r){
-    const a = document.createElement('a'); a.href = r.url; a.target = '_blank'; a.className = 'icon doc';
-    if(/youtube|youtu.be/.test(r.url)){ a.className='icon yt'; a.textContent='yt'; }
-    else if(/mozilla.org|developer.mozilla.org/.test(r.url)){ a.className='icon md'; a.textContent='md'; }
-    else if(/openweathermap/.test(r.url) || /tmdb|openai/.test(r.url)){ a.className='icon api'; a.textContent='api'; }
-    else { a.className='icon doc'; a.textContent='doc'; }
-    a.title = r.title; return a;
-  }
-  function difficultyClass(d){
-    if(!d) return 'diff med';
-    const dd = d.toLowerCase();
-    if(dd.includes('easy')) return 'diff easy';
-    if(dd.includes('hard')) return 'diff hard';
-    return 'diff med';
-  }
+      { id:'proj-portfolio', type:'project', title:'Portfolio Showcase', why:'Displays design polish and projects — recruiter magnet.', resources:[], practice:'Add hover effects, animations, responsive layout', difficulty:'Medium' },
 
-  // UI refs
-  const leftCol = $('#leftCol');
-  const overallFill = $('#overallFill');
-  const overallText = $('#overallText');
-  const statMonths = $('#statMonths');
-  const statItems = $('#statItems');
-  const statDone = $('#statDone');
-  const statDSA = $('#statDSA');
+      { id:'dec-js', type:'topic', title:'JavaScript: ES6+ Basics', why:'Modern JS is used everywhere; prepares for React & Node.', resources:[{title:'freeCodeCamp JS Full',url:'https://www.youtube.com/watch?v=PkZNo7MFNFg'}], practice:'map/filter/reduce, arrow functions, destructuring', difficulty:'Easy' },
 
-  // Render
-  function render(){
-    leftCol.innerHTML = '';
-    let totalItems=0, totalDone=0, dsaCount=0;
-    ROADMAP.forEach(month=>{
-      const mon = document.createElement('div'); mon.className='month';
-      const mh = document.createElement('div'); mh.className='month-header';
-      mh.innerHTML = `<div><h2>${month.name}</h2><div class="month-desc">${month.description}</div></div>
-        <div style="text-align:right"><div style="font-size:13px;color:var(--muted)">Weeks: ${month.weeks.length}</div>
-        <div style="margin-top:6px"><button class="btn" data-action="toggleMonth">Toggle</button></div></div>`;
-      mon.appendChild(mh);
+      { id:'dec-dom', type:'topic', title:'DOM Manipulation & Events', why:'Understand how UI updates work before React.', resources:[{title:'JS.info DOM',url:'https://javascript.info/dom-nodes'}], practice:'Build To-Do app with localStorage', difficulty:'Medium' },
 
-      const weeksWrap = document.createElement('div');
-      month.weeks.forEach(week=>{
-        const weekBox = document.createElement('div'); weekBox.className='week';
-        const wh = document.createElement('div'); wh.className='week-head';
-        wh.innerHTML = `<div class="wtitle">${week.title}</div><div class="wmeta" id="meta-${week.id}"></div>`;
-        weekBox.appendChild(wh);
-        const wbar = document.createElement('div'); wbar.className='wbar'; wbar.innerHTML='<i style="width:0%"></i>'; weekBox.appendChild(wbar);
+      { id:'proj-tempotimer', type:'project', title:'TempoTimer (Timer App)', why:'Practice intervals, timing and state updates.', resources:[], practice:'Deploy timer with lap feature', difficulty:'Medium' },
 
-        const table = document.createElement('div'); table.className='table';
-        const header = document.createElement('div'); header.className='row head';
-        header.innerHTML = `<div></div><div>Topic / Project</div><div>Resources</div><div>Practice / Deliverables</div><div>Why it matters</div><div>Diff</div><div>Notes</div>`;
-        table.appendChild(header);
+      { id:'proj-storyweaver', type:'project', title:'StoryWeaver (Interactive Story)', why:'Branching UI logic that maps to React patterns.', resources:[], practice:'Implement branching and state persistence', difficulty:'Medium' },
 
-        let weekTotal=0, weekDone=0;
-        (week.items||[]).forEach(item=>{
-          weekTotal++; totalItems++;
-          if(/dsa/i.test(item.title)){ const n = (item.title.match(/(\d+)/)||[])[0]; if(n) dsaCount += parseInt(n); }
-          if(progress[item.id]){ weekDone++; totalDone++; }
-          const row = document.createElement('div'); row.className='row';
+      { id:'proj-weather', type:'project', title:'Weather Insight App', why:'API integration, async/await and error handling (OpenWeather).', resources:[{title:'OpenWeather',url:'https://openweathermap.org/api'}], practice:'Debounced search + error UI + caching', difficulty:'Medium' },
 
-          // checkbox
-          const cbWrap = document.createElement('div'); cbWrap.className='checkbox';
-          const cb = document.createElement('input'); cb.type='checkbox'; cb.checked = !!progress[item.id];
-          cb.addEventListener('change', ()=>{ progress[item.id]=cb.checked; saveProgress(); render(); });
-          cbWrap.appendChild(cb);
+      { id:'dec-dsa', type:'topic', title:'DSA: Arrays & Strings (20 problems)', why:'Core interview topics; pattern recognition.', resources:[{title:'NeetCode',url:'https://neetcode.io/practice'}], practice:'Solve 20 problems and push explanations', difficulty:'Medium' }
+    ]
+  },
 
-          // title
-          const titleCell = document.createElement('div'); titleCell.className='title-cell';
-          titleCell.innerHTML = `<div>${item.title}${item.project? ' • Project: ' + item.project : ''}</div><div class="small">${item.type ? item.type.toUpperCase() : 'TOPIC'}</div>`;
-          titleCell.addEventListener('dblclick', ()=> openModal(item));
+  {
+    id: 'jan',
+    name: 'January — React Basics + Intermediate DSA',
+    description: 'React fundamentals (Vite), hooks, component design, Tailwind, and intermediate arrays & strings.',
+    weeks: [
+      { title:'Week 1 — React setup & Components', tasks:['Vite setup','JSX & props','Component design'] },
+      { title:'Week 2 — Hooks & Effects', tasks:['useState','useEffect','lifecycles & cleanup'] },
+      { title:'Week 3 — Styling & Tailwind', tasks:['Tailwind setup','component system','Flashcards tool'] },
+      { title:'Week 4 — Project polish & DSA', tasks:['BudgetBee','15 medium array problems'] }
+    ],
+    items: [
+      { id:'react-setup', type:'topic', title:'Vite + React Setup', why:'Faster dev server and modern build tooling.', resources:[{title:'Vite + React',url:'https://vitejs.dev/'}], practice:'Create starter template', difficulty:'Easy' },
 
-          // resources
-          const resCell = document.createElement('div'); resCell.className='res-icons';
-          if(item.resources && item.resources.length) item.resources.forEach(r=> resCell.appendChild(resourceIconEl(r)));
-          else resCell.innerHTML = '<span style="color:var(--muted)">—</span>';
+      { id:'react-components', type:'topic', title:'React: Components, Props, JSX', why:'Components are the building blocks of UIs; composability matters.', resources:[{title:'React Docs',url:'https://react.dev/learn'}], practice:'Build Quote Generator', difficulty:'Easy' },
 
-          // practice
-          const practiceCell = document.createElement('div'); practiceCell.innerHTML = item.practice || (item.project? ('Deliverable: ' + item.project) : 'Follow resources');
+      { id:'react-hooks', type:'topic', title:'useState & useEffect', why:'State and side-effects power component behavior.', resources:[], practice:'CineMatch: API + useEffect + pagination', difficulty:'Medium' },
 
-          // why
-          const whyCell = document.createElement('div'); whyCell.className='small'; whyCell.textContent = item.why || '';
+      { id:'proj-quote', type:'project', title:'Quote Generator', why:'Practice fetch + state + components.', resources:[], practice:'Deploy small React app', difficulty:'Easy' },
 
-          // diff
-          const diffCell = document.createElement('div'); diffCell.innerHTML = `<div class="${difficultyClass(item.difficulty||'Medium')}">${item.difficulty || (item.type==='project'?'Hard':'Medium')}</div>`;
+      { id:'proj-cinematch', type:'project', title:'CineMatch (Movie Browser)', why:'Pagination & search; skeleton loaders.', resources:[], practice:'TMDB integration and UI polish', difficulty:'Medium' },
 
-          // notes
-          const notesCell = document.createElement('div'); const ta = document.createElement('textarea'); ta.className='notes'; ta.value = notes[item.id] || '';
-          ta.addEventListener('change', ()=>{ notes[item.id] = ta.value; saveNotes(); });
-          notesCell.appendChild(ta);
+      { id:'jan-dsa', type:'topic', title:'DSA: Advanced Arrays (15 problems)', why:'Sliding window & prefix sums for medium problems.', resources:[], practice:'Solve 15 problems and write notes', difficulty:'Medium' }
+    ]
+  },
 
-          // assemble
-          row.appendChild(cbWrap);
-          const c1 = document.createElement('div'); c1.appendChild(titleCell); row.appendChild(c1);
-          const c2 = document.createElement('div'); c2.appendChild(resCell); row.appendChild(c2);
-          const c3 = document.createElement('div'); c3.appendChild(practiceCell); row.appendChild(c3);
-          const c4 = document.createElement('div'); c4.appendChild(whyCell); row.appendChild(c4);
-          const c5 = document.createElement('div'); c5.appendChild(diffCell); row.appendChild(c5);
-          const c6 = document.createElement('div'); c6.appendChild(notesCell); row.appendChild(c6);
+  {
+    id: 'feb',
+    name: 'February — Advanced React, Routing & Linked List DSA',
+    description: 'Context, routing, custom hooks, form validation, TypeScript intro and linked list problems.',
+    weeks:[
+      {title:'Week 1 — Context & Reducer', tasks:['Context API','useReducer patterns']},
+      {title:'Week 2 — Router & Protected Routes', tasks:['React Router v6','Auth flow']},
+      {title:'Week 3 — Custom Hooks & Forms', tasks:['Custom hooks','useRef','Yup validation']},
+      {title:'Week 4 — DSA Linked List', tasks:['Implement linked list','10 LL problems']}
+    ],
+    items:[
+      { id:'context', type:'topic', title:'Context API + useReducer', why:'Lightweight global state for medium apps.', resources:[], practice:'PlanSync (study planner)', difficulty:'Medium' },
 
-          table.appendChild(row);
-        });
+      { id:'router', type:'topic', title:'React Router v6', why:'Client-side routing & nested routes.', resources:[], practice:'NoteVerse nested routes', difficulty:'Easy' },
 
-        weekBox.appendChild(table);
-        weeksWrap.appendChild(weekBox);
+      { id:'custom-hooks', type:'topic', title:'Custom Hooks & useRef', why:'DRY repeated logic & refs for DOM interactions.', resources:[], practice:'StreamBox: create usePlayer hook', difficulty:'Medium' },
 
-        const pct = week.items && week.items.length ? Math.round((week.items.filter(it=>progress[it.id]).length / week.items.length)*100) : 0;
-        const meta = weekBox.querySelector(`#meta-${week.id}`);
-        if(meta) meta.textContent = `${pct}% • ${week.items.filter(it=>progress[it.id]).length}/${week.items.length}`;
-        weekBox.querySelector('.wbar i').style.width = pct + '%';
-      });
+      { id:'proj-plansync', type:'project', title:'PlanSync (Study Planner)', why:'State mgmt + reducer patterns.', resources:[], practice:'Add tests for reducer logic', difficulty:'Medium' },
 
-      mon.appendChild(weeksWrap);
-      leftCol.appendChild(mon);
+      { id:'feb-dsa', type:'topic', title:'DSA: Linked List (10 problems)', why:'Pointers & memory model; frequent interview problems.', resources:[], practice:'Implement LL ops: reverse, merge, cycle detect', difficulty:'Medium' }
+    ]
+  },
 
-      // toggle month
-      mh.querySelector('[data-action=toggleMonth]').addEventListener('click', ()=> {
-        const w = mon.querySelectorAll('.week'); w.forEach(x=> x.style.display = (x.style.display==='none' ? 'block' : 'none'));
-      });
-    });
+  {
+    id:'mar',
+    name:'March — Backend: Node, Express, MongoDB & DevOps intro',
+    description:'Build secure REST APIs, JWT auth, database design, Docker, Redis caching, and system design basics.',
+    weeks:[
+      {title:'Week1 — Node & Express', tasks:['Event loop','routing & middleware']},
+      {title:'Week2 — Auth & Security', tasks:['JWT','bcrypt','rate-limiting']},
+      {title:'Week3 — MongoDB & Mongoose', tasks:['Schemas','indexes','aggregation']},
+      {title:'Week4 — Docker, Redis & Testing', tasks:['Docker Compose','Jest+Supertest','Redis caching']}
+    ],
+    items:[
+      { id:'node', type:'topic', title:'Node.js Fundamentals', why:'Event loop and async patterns for servers.', resources:[{title:'Node Crash Course',url:'https://www.youtube.com/watch?v=fBNz5xF-Kx4'}], practice:'ServerBase skeleton', difficulty:'Medium' },
 
-    const percent = totalItems ? Math.round((totalDone/totalItems)*100) : 0;
-    overallFill.style.width = percent + '%'; overallText.textContent = percent + '%';
-    statMonths.textContent = ROADMAP.length; statItems.textContent = totalItems; statDone.textContent = totalDone; statDSA.textContent = dsaCount||'—';
-  } // render()
+      { id:'express', type:'topic', title:'Express.js & REST API design', why:'Routing, middleware & controllers structure.', resources:[], practice:'Build Notes API endpoints', difficulty:'Medium' },
 
-  // modal logic
-  const modal = $('#modal'), mdTitle = $('#mdTitle'), mdType = $('#mdType'), mdWhy = $('#mdWhy'), mdPractice = $('#mdPractice'), mdResources = $('#mdResources'), mdNotes = $('#mdNotes');
-  $('#mdClose').addEventListener('click', ()=> modal.style.display='none');
+      { id:'authforge', type:'project', title:'AuthForge (JWT Auth API)', why:'Secure signup/login, refresh tokens & secure storage.', resources:[], practice:'Implement refresh tokens + Postman collection', difficulty:'Medium' },
 
-  function openModal(item){
-    mdTitle.textContent = item.title;
-    mdType.textContent = (item.type||'TOPIC') + (item.project ? ' • Project: ' + item.project : '');
-    mdWhy.textContent = 'Why: ' + (item.why || '—');
-    mdPractice.textContent = 'Practice / Deliverables: ' + (item.practice || (item.project ? 'Deliverable: ' + item.project : '—'));
-    mdResources.innerHTML = '';
-    if(item.resources && item.resources.length){
-      const ul = document.createElement('ul');
-      item.resources.forEach(r=>{ const li = document.createElement('li'); li.innerHTML = `<a href="${r.url}" target="_blank" style="color:#60a5fa">${r.title}</a>`; ul.appendChild(li); });
-      mdResources.appendChild(ul);
-    } else mdResources.textContent = 'No external resources provided.';
-    mdNotes.value = notes[item.id] || '';
-    modal.style.display = 'flex';
-    $('#mdSave').onclick = ()=>{ notes[item.id] = mdNotes.value; saveNotes(); modal.style.display='none'; render(); };
-  }
+      { id:'notesapi', type:'project', title:'Notes API (MERN)', why:'CRUD + persistence + validation using MongoDB & Mongoose.', resources:[], practice:'Deploy to Render + MongoDB Atlas', difficulty:'Medium' },
 
-  // search
-  $('#search').addEventListener('input', function(){
-    const q = this.value.trim().toLowerCase();
-    document.querySelectorAll('.row').forEach(row=>{
-      if(row.classList.contains('head')) return;
-      const title = row.querySelector('.title-cell') ? row.querySelector('.title-cell').textContent.toLowerCase() : '';
-      const why = row.querySelector('.small') ? row.querySelector('.small').textContent.toLowerCase() : '';
-      row.style.display = (title.includes(q) || why.includes(q)) ? (window.innerWidth>700 ? 'grid' : 'block') : 'none';
-    });
-  });
+      { id:'docker', type:'topic', title:'Docker & Redis basics', why:'Containerization & caching used in production.', resources:[], practice:'Dockerize API and add Redis cache for hot endpoints', difficulty:'Medium' },
 
-  // quick actions
-  $('#markAll').addEventListener('click', ()=>{ ROADMAP.forEach(m=>m.weeks.forEach(w=> (w.items||[]).forEach(it=>progress[it.id]=true))); saveProgress(); render(); });
-  $('#clearAll').addEventListener('click', ()=>{ ROADMAP.forEach(m=>m.weeks.forEach(w=> (w.items||[]).forEach(it=>progress[it.id]=false))); saveProgress(); render(); });
-  $('#expandAll').addEventListener('click', ()=>{ document.querySelectorAll('.week').forEach(s=> s.style.display='block'); });
+      { id:'mar-dsa', type:'topic', title:'DSA: Stack & Queue (15 problems)', why:'LIFO/FIFO patterns used in algorithms and systems.', resources:[], practice:'Solve 15 problems', difficulty:'Medium' }
+    ]
+  },
 
-  // small compatibility functions
-  function updateStats(){} function updateOverall(){}
+  {
+    id:'apr',
+    name:'April — MERN Integration, CI/CD, AWS & Flagship Projects',
+    description:'Integrate frontend+backend, set up CI/CD, monitoring, build flagship AI project & system design case studies.',
+    weeks:[
+      {title:'Week1 — Integration & Auth', tasks:['Axios setup','token refresh','protected routes']},
+      {title:'Week2 — Forum & Features', tasks:['CodeTalk forum','pagination','file uploads']},
+      {title:'Week3 — DevOps & Deploy', tasks:['Docker Compose','Nginx','deploy to AWS/Vercel']},
+      {title:'Week4 — Monitoring & Flagship', tasks:['Winston + Sentry','AI Code Review Assistant','architecture docs']}
+    ],
+    items:[
+      { id:'integration', type:'topic', title:'Frontend ↔ Backend integration', why:'Proper auth flows & secure API calls are essential.', resources:[], practice:'SkillSync integrated app', difficulty:'Medium' },
 
-  // initial render
-  render();
-}); // DOMContentLoaded
-</script>
-</body>
-</html>
+      { id:'codetalk', type:'project', title:'CodeTalk (Developer Forum)', why:'Posts, comments, search, moderation & RBAC; showcases fullstack skills.', resources:[], practice:'Deploy with pagination and file upload', difficulty:'Hard' },
+
+      { id:'habitpulse', type:'project', title:'HabitPulse (Analytics Dashboard)', why:'Telemetry & analytics for product metrics.', resources:[], practice:'Add graphs, metrics & deployment', difficulty:'Hard' },
+
+      { id:'ai-review', type:'project', title:'AI Code Review Assistant', why:'Flagship — shows architecture, OpenAI integration & production readiness.', resources:[{title:'OpenAI API',url:'https://platform.openai.com/docs'}], practice:'Deploy on AWS + CI/CD + monitoring', difficulty:'Hard' },
+
+      { id:'apr-dsa', type:'topic', title:'DSA: Trees (10 problems)', why:'Recursion, traversals & tree algorithms.', resources:[], practice:'Implement traversals, LCA, balance checks', difficulty:'Medium' },
+
+      { id:'sysdesign', type:'topic', title:'System Design Case Studies', why:'High-level architecture for interviews (URL shortener, chat, notifications).', resources:[{title:'System Design Primer',url:'https://github.com/donnemartin/system-design-primer'}], practice:'Create architecture docs and tradeoffs', difficulty:'Hard' },
+
+      { id:'devops-aws', type:'topic', title:'DevOps: Docker, CI/CD, AWS', w
