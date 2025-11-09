@@ -48,6 +48,8 @@
     .resources{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
     .resource{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:6px;font-size:12px;color:var(--muted);text-decoration:none}
     .why{font-size:13px;color:#dbeafe;margin-top:8px}
+    .learnlist{margin-top:8px;padding-left:16px;color:var(--muted)}
+    .learnlist li{margin-bottom:6px}
     .footer{margin-top:16px;color:var(--muted);font-size:13px}
     .controls input[type=file]{display:none}
     .badge{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px;font-size:12px}
@@ -96,16 +98,14 @@
   </div>
 
 <script>
-/*
-  Single-file EBIN TRACKER
-  - Data model: months -> weeks -> items (topics)
-  - Persist progress in localStorage
-  - Export / Import JSON
+/* STATE / DATA / RENDER
+   Extended: each topic now has `learn` array (what to learn)
+   Save to localStorage key: ebin_fullstack_progress_v2
 */
 
 const STORAGE_KEY = 'ebin_fullstack_progress_v2';
 
-// ---------- ROADMAP DATA (week-by-week, Dec -> Apr) ----------
+// Full roadmap with "what to learn" bullets
 const roadmap = {
   meta: { title: 'EBIN TRACKER — A2Z MAANG Full-Stack Roadmap' },
   months: [
@@ -123,12 +123,18 @@ const roadmap = {
               title: 'HTML & Semantic Markup',
               category: 'Frontend',
               resources: [
-                { label: 'Traversy — HTML Crash Course', href: 'https://www.youtube.com/watch?v=UB1O30fR-EE' },
-                { label: 'MDN — HTML Basics', href: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML' },
-                { label: 'web.dev — Semantic HTML', href: 'https://web.dev/learn/html/semantic-html/' }
+                { label: 'Traversy — HTML Crash', href: 'https://www.youtube.com/watch?v=UB1O30fR-EE' },
+                { label: 'MDN — HTML Basics', href: 'https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML' }
               ],
-              practice: 'Build interactive resume page using header/nav/main/section/article/footer and a contact form.',
-              why: 'Semantic HTML improves accessibility, SEO and is the structural basis for components later in React.',
+              learn: [
+                'HTML document structure: <!doctype>, <html>, <head>, <body>',
+                'Semantic elements: header, nav, main, section, article, footer',
+                'Forms: input types, labels, validation attributes',
+                'Meta tags for SEO and viewport',
+                'Proper use of <img> alt attributes'
+              ],
+              practice: 'Build interactive resume with semantic sections & contact form.',
+              why: 'Semantic structure improves accessibility, SEO and foundations for components.',
               suggestedTime: '4 hrs',
               difficulty: 'Easy'
             },
@@ -137,11 +143,18 @@ const roadmap = {
               title: 'CSS Fundamentals: Box Model & Typography',
               category: 'Frontend',
               resources: [
-                { label: 'Kevin Powell — CSS', href: 'https://www.youtube.com/@KevinPowell' },
+                { label: 'Kevin Powell', href: 'https://www.youtube.com/@KevinPowell' },
                 { label: 'MDN — CSS', href: 'https://developer.mozilla.org/en-US/docs/Web/CSS' }
               ],
-              practice: 'External stylesheet, use Google Fonts, CSS variables.',
-              why: 'Prevents layout bugs and produces consistent UI.',
+              learn: [
+                'Box model: content, padding, border, margin',
+                'Display types: block, inline, inline-block, flex',
+                'Positioning: static, relative, absolute, fixed',
+                'Font families, sizes, line-height, font-weight',
+                'CSS variables and using Google Fonts'
+              ],
+              practice: 'Create a styled resume layout using variables.',
+              why: 'Prevents layout bugs and builds consistent UI.',
               suggestedTime: '3 hrs',
               difficulty: 'Easy'
             },
@@ -153,7 +166,13 @@ const roadmap = {
                 { label: 'Flexbox Froggy', href: 'https://flexboxfroggy.com/' },
                 { label: 'Kevin Powell — Grid', href: 'https://www.youtube.com/@KevinPowell' }
               ],
-              practice: 'Create skills grid and responsive header.',
+              learn: [
+                'Flexbox basics: justify-content, align-items, flex-direction',
+                'Grid basics: grid-template-columns, grid-gap, auto-fill',
+                'Responsive layout patterns using minmax()',
+                'Combining Flexbox and Grid for complex UIs'
+              ],
+              practice: 'Build skills grid using CSS Grid & header with Flexbox.',
               why: 'Essential for modern responsive UIs.',
               suggestedTime: '4 hrs',
               difficulty: 'Medium'
@@ -169,11 +188,18 @@ const roadmap = {
               title: 'JavaScript ES6+ Fundamentals',
               category: 'Frontend / JS',
               resources: [
-                { label: 'freeCodeCamp — JS Full Course', href: 'https://www.youtube.com/watch?v=PkZNo7MFNFg' },
+                { label: 'freeCodeCamp JS Full Course', href: 'https://www.youtube.com/watch?v=PkZNo7MFNFg' },
                 { label: 'javascript.info', href: 'https://javascript.info/' }
               ],
-              practice: 'map/filter/reduce, arrow functions, destructuring.',
-              why: 'Modern JS is used everywhere — React & Node rely on these features.',
+              learn: [
+                'let/const and block scope',
+                'Arrow functions and lexical this',
+                'Destructuring arrays/objects',
+                'Spread & rest operators',
+                'Array methods: map, filter, reduce'
+              ],
+              practice: 'Practice problems and small utilities using ES6 syntax.',
+              why: 'Modern JS is used in React & Node; concise idiomatic code.',
               suggestedTime: '6–8 hrs',
               difficulty: 'Medium'
             },
@@ -182,10 +208,17 @@ const roadmap = {
               title: 'DOM Manipulation & Events',
               category: 'Frontend / JS',
               resources: [
-                { label: 'JavaScript.info — DOM', href: 'https://javascript.info/dom-nodes' }
+                { label: 'JS Info — DOM', href: 'https://javascript.info/dom-nodes' }
               ],
-              practice: 'Build To-Do app with add/edit/delete & localStorage.',
-              why: 'Essential to understand UI updates before React.',
+              learn: [
+                'Selecting elements: querySelector, getElementById',
+                'Event handling: addEventListener, event delegation',
+                'Creating/removing nodes, innerHTML vs createElement',
+                'Form handling and validation in JS',
+                'Using localStorage for persistence'
+              ],
+              practice: 'Build To-Do app with localStorage & edit/delete features.',
+              why: 'Understanding DOM clarifies how React abstracts the DOM.',
               suggestedTime: '6 hrs',
               difficulty: 'Medium'
             }
@@ -202,8 +235,15 @@ const roadmap = {
               resources: [
                 { label: 'MDN — Fetch API', href: 'https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API' }
               ],
-              practice: 'Implement fetchJson(url) wrapper with retries & exponential backoff.',
-              why: 'Real apps use remote APIs — handle async patterns & errors.',
+              learn: [
+                'Promises vs callbacks',
+                'Writing async/await functions with try/catch',
+                'Handling HTTP errors and response codes',
+                'Implementing retry logic and exponential backoff',
+                'Using AbortController to cancel requests'
+              ],
+              practice: 'Implement fetchJson wrapper with retries and usable error messages.',
+              why: 'APIs are the backbone of modern apps; proper async handling prevents bugs.',
               suggestedTime: '4 hrs',
               difficulty: 'Medium'
             },
@@ -214,8 +254,14 @@ const roadmap = {
               resources: [
                 { label: 'OpenWeather API', href: 'https://openweathermap.org/api' }
               ],
-              practice: 'Deployed weather app with search, debounce input, error states.',
-              why: 'API integration and UX handling.',
+              learn: [
+                'Reading API docs and registering for API keys',
+                'Debouncing input to reduce API calls',
+                'Displaying loading & error states',
+                'Parsing JSON & using icons/assets'
+              ],
+              practice: 'Build and deploy weather app with search + debounce input.',
+              why: 'Real-world API integration and error handling.',
               suggestedTime: '8–10 hrs',
               difficulty: 'Medium'
             }
@@ -233,7 +279,14 @@ const roadmap = {
                 { label: 'MDN — Accessibility', href: 'https://developer.mozilla.org/en-US/docs/Learn/Accessibility/What_is_accessibility' },
                 { label: 'web.dev — Accessibility', href: 'https://web.dev/accessibility/' }
               ],
-              practice: 'Add ARIA roles, keyboard navigation, alt text; run Lighthouse audits.',
+              learn: [
+                'ARIA roles and when to use them',
+                'Keyboard navigation & focus management',
+                'Color contrast and readable fonts',
+                'Semantic HTML for screen-readers',
+                'Using Lighthouse accessibility audits'
+              ],
+              practice: 'Run Lighthouse and fix top accessibility issues on portfolio.',
               why: 'Inclusive products and recruiter checks; required for production.',
               suggestedTime: '2 hrs',
               difficulty: 'Medium'
@@ -245,8 +298,15 @@ const roadmap = {
               resources: [
                 { label: 'Git Handbook', href: 'https://guides.github.com/introduction/git-handbook/' }
               ],
-              practice: 'Create repo, feature branch, open PR with descriptive commit messages.',
-              why: 'Collaboration; companies expect branching + PR etiquette.',
+              learn: [
+                'Init, clone, add, commit, push',
+                'Branching strategy: feature/*, main, develop',
+                'Opening PRs and writing clear descriptions',
+                'Resolving merge conflicts',
+                'Writing good commit messages (conventional commits)'
+              ],
+              practice: 'Open a feature branch PR to your repo with meaningful commits.',
+              why: 'Collaboration and professional workflow expectations.',
               suggestedTime: '2 hrs',
               difficulty: 'Easy'
             }
@@ -272,8 +332,15 @@ const roadmap = {
                 { label: 'Traversy — React Crash', href: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8' },
                 { label: 'React docs', href: 'https://react.dev/' }
               ],
-              practice: 'Create simple component library (InfoCard, Button).',
-              why: 'Core skill for frontend interviews',
+              learn: [
+                'Setting up Vite project and running dev server',
+                'JSX syntax and embedding expressions',
+                'Functional components vs class components basics',
+                'Props, default props and prop composition',
+                'Component folder structure & simple conventions'
+              ],
+              practice: 'Create a component library (InfoCard, Button) and publish locally.',
+              why: 'Core skill for frontend interviews and building UIs.',
               suggestedTime: '3 hrs',
               difficulty: 'Easy'
             },
@@ -284,8 +351,14 @@ const roadmap = {
               resources: [
                 { label: 'React useState Docs', href: 'https://react.dev/reference/react/useState' }
               ],
-              practice: 'Counter and controlled forms',
-              why: 'Local state patterns are building blocks for complex apps.',
+              learn: [
+                'Using useState for simple state',
+                'Functional state updates',
+                'Lifting state up and prop drilling',
+                'Controlled components (forms) vs uncontrolled'
+              ],
+              practice: 'Build a small form and manage state with useState.',
+              why: 'Local state is the foundation of React apps.',
               suggestedTime: '2 hrs',
               difficulty: 'Easy'
             }
@@ -302,8 +375,14 @@ const roadmap = {
               resources: [
                 { label: 'React useEffect Docs', href: 'https://react.dev/reference/react/useEffect' }
               ],
-              practice: 'CineMatch — movie search with pagination and skeleton loaders.',
-              why: 'Real app UX patterns and caching considerations.',
+              learn: [
+                'Effect dependencies and cleanup functions',
+                'Fetching data inside useEffect safely',
+                'Avoiding infinite loops and stale closures',
+                'Basic caching strategies and aborting fetch'
+              ],
+              practice: 'Build CineMatch with search, pagination and skeleton loaders.',
+              why: 'Shows mastery of side effects & real app UX patterns.',
               suggestedTime: '6–8 hrs',
               difficulty: 'Medium'
             }
@@ -311,7 +390,7 @@ const roadmap = {
         },
         {
           id: 'jan-w3',
-          title: 'Week 7 — Styling with Tailwind & Component System',
+          title: 'Week 7 — Styling & Component System',
           items: [
             {
               id: 'jan-w3-1',
@@ -321,8 +400,14 @@ const roadmap = {
                 { label: 'Tailwind Docs', href: 'https://tailwindcss.com/docs' },
                 { label: 'shadcn/ui', href: 'https://ui.shadcn.com/' }
               ],
-              practice: 'Flashcards tool with reusable Card and Modal components.',
-              why: 'Build consistent UIs quicker in production.',
+              learn: [
+                'Utility-first styling and responsive classes',
+                'Creating reusable UI components (Card, Button)',
+                'Design tokens and consistent spacing',
+                'Using a component library to speed development'
+              ],
+              practice: 'Build Flashcards tool using reusable components.',
+              why: 'UI systems speed up building consistent interfaces.',
               suggestedTime: '6 hrs',
               difficulty: 'Medium'
             }
@@ -339,8 +424,14 @@ const roadmap = {
               resources: [
                 { label: 'Chart.js', href: 'https://www.chartjs.org/docs/latest/' }
               ],
-              practice: 'BudgetBee — expense tracker with charts and totals.',
-              why: 'Global state & visualization for dashboards.',
+              learn: [
+                'Provide/consume pattern for context',
+                'When to use Context vs global stores',
+                'Integrating Chart.js with React components',
+                'Preparing data for charts and performance concerns'
+              ],
+              practice: 'Build BudgetBee with charts and context-managed state.',
+              why: 'Useful for dashboards and global state needs.',
               suggestedTime: '6–8 hrs',
               difficulty: 'Medium'
             }
@@ -365,8 +456,14 @@ const roadmap = {
               resources: [
                 { label: 'React Context Docs', href: 'https://react.dev/learn/context' }
               ],
-              practice: 'PlanSync — study planner with global state via reducer.',
-              why: 'Pattern for scalable state management.',
+              learn: [
+                'useReducer patterns: actions, reducers, initial state',
+                'Testing reducers with plain JS',
+                'Combining Context with useReducer for auth or cart',
+                'Performance: memoization with useMemo/useCallback'
+              ],
+              practice: 'PlanSync — implement reducer-driven task management.',
+              why: 'Pattern used in medium-large apps for predictable state changes.',
               suggestedTime: '6 hrs',
               difficulty: 'Medium'
             }
@@ -383,8 +480,14 @@ const roadmap = {
               resources: [
                 { label: 'React Router Docs', href: 'https://reactrouter.com/' }
               ],
-              practice: 'NoteVerse — nested routes and auth-protected pages.',
-              why: 'Essential for multi-page frontends.',
+              learn: [
+                'Configuring routes, nested routes and index routes',
+                'Implementing protected routes with token checks',
+                'Handling 404 and redirect flows',
+                'Lazy loading routes for performance'
+              ],
+              practice: 'NoteVerse — nested folders and auth-protected views.',
+              why: 'Essential for multi-page frontends with auth flows.',
               suggestedTime: '5 hrs',
               difficulty: 'Medium'
             }
@@ -396,14 +499,20 @@ const roadmap = {
           items: [
             {
               id: 'feb-w3-1',
-              title: 'Custom Hooks (useFetch, usePlayer) & Form Validation',
+              title: 'Custom Hooks & Form Validation',
               category: 'React',
               resources: [
                 { label: 'React Hook Form', href: 'https://react-hook-form.com/' },
                 { label: 'Yup', href: 'https://github.com/jquense/yup' }
               ],
-              practice: 'StreamBox — build custom usePlayer hook; TaskMind validation flows.',
-              why: 'Reusable logic & robust forms.',
+              learn: [
+                'Designing custom hooks (useFetch, useDebounce)',
+                'Managing refs with useRef and imperative APIs',
+                'Form validation patterns with RHF + Yup',
+                'Handling complex nested forms and arrays'
+              ],
+              practice: 'StreamBox + TaskMind — custom hooks & validated forms.',
+              why: 'Reusable logic and robust forms improve quality and reusability.',
               suggestedTime: '8 hrs',
               difficulty: 'Hard'
             }
@@ -419,10 +528,16 @@ const roadmap = {
               category: 'React / QA',
               resources: [
                 { label: 'TypeScript Handbook', href: 'https://www.typescriptlang.org/docs/' },
-                { label: 'Jest + React Testing Library', href: 'https://testing-library.com/docs/react-testing-library/intro/' }
+                { label: 'Jest + Testing Library', href: 'https://testing-library.com/docs/react-testing-library/intro/' }
               ],
-              practice: 'Migrate NoteVerse core components to TypeScript; add unit tests.',
-              why: 'Types + tests = maintainable code.',
+              learn: [
+                'Typing props and component return types',
+                'Generics for reusable components',
+                'Configuring tsconfig and migrating JS -> TS',
+                'Writing unit tests for components and hooks'
+              ],
+              practice: 'Migrate NoteVerse to TypeScript; add Jest tests.',
+              why: 'Types + tests = confidence and maintainable code.',
               suggestedTime: '10 hrs',
               difficulty: 'Hard'
             }
@@ -447,8 +562,14 @@ const roadmap = {
               resources: [
                 { label: 'Traversy — Node Crash', href: 'https://www.youtube.com/watch?v=fBNz5xF-Kx4' }
               ],
-              practice: 'ServerBase API with routes/controllers and logging middleware (Winston).',
-              why: 'Understand server-side request handling and middleware.',
+              learn: [
+                'Understanding event loop & async nature of Node',
+                'Project structure: routes, controllers, services, models',
+                'Middleware patterns and error handling',
+                'Logging with Winston and request correlation'
+              ],
+              practice: 'ServerBase API with routes & logging middleware.',
+              why: 'Server fundamentals for any backend engineer role.',
               suggestedTime: '6–8 hrs',
               difficulty: 'Medium'
             }
@@ -466,8 +587,14 @@ const roadmap = {
                 { label: 'JWT.io', href: 'https://jwt.io/' },
                 { label: 'bcrypt', href: 'https://www.npmjs.com/package/bcrypt' }
               ],
-              practice: 'Implement signup/login with access & refresh token flow; add Helmet & rate limiter.',
-              why: 'Secure authentication is required in production services.',
+              learn: [
+                'Password hashing with bcrypt',
+                'Access vs refresh tokens and rotation patterns',
+                'Secure cookie vs Authorization header tradeoffs',
+                'Protecting endpoints with role checks & rate limiting'
+              ],
+              practice: 'Implement signup/login, refresh tokens, and secure routes.',
+              why: 'Authentication is a core backend requirement and common interview topic.',
               suggestedTime: '8–10 hrs',
               difficulty: 'Hard'
             }
@@ -485,8 +612,14 @@ const roadmap = {
                 { label: 'MongoDB University', href: 'https://university.mongodb.com/' },
                 { label: 'Mongoose Docs', href: 'https://mongoosejs.com/' }
               ],
-              practice: 'Notes API & TaskStream API; design schemas and implement indexes.',
-              why: 'Correct schema design improves performance and feature speed.',
+              learn: [
+                'Document modeling vs relational modeling',
+                'Creating indexes for queries and unique constraints',
+                'Population (refs) and denormalization tradeoffs',
+                'Aggregation pipeline basics and common stages'
+              ],
+              practice: 'Build Notes API and design indexes for fast queries.',
+              why: 'Good DB design prevents scaling problems later.',
               suggestedTime: '8 hrs',
               difficulty: 'Medium'
             }
@@ -504,8 +637,14 @@ const roadmap = {
                 { label: 'Docker Docs', href: 'https://docs.docker.com/get-started/' },
                 { label: 'Supertest', href: 'https://github.com/visionmedia/supertest' }
               ],
-              practice: 'Create Dockerfile & docker-compose; cache hot endpoints with Redis; write Jest + Supertest tests.',
-              why: 'Containerization + caching = deployable, fast services.',
+              learn: [
+                'Writing Dockerfile and .dockerignore',
+                'Setting up docker-compose for multi-service local dev',
+                'Using Redis as an in-memory cache with TTL',
+                'Writing integration tests using Jest + Supertest'
+              ],
+              practice: 'Create compose file, cache endpoints and write tests.',
+              why: 'Containerization and testing are required for production pipelines.',
               suggestedTime: '10 hrs',
               difficulty: 'Hard'
             }
@@ -530,8 +669,14 @@ const roadmap = {
               resources: [
                 { label: 'Axios Docs', href: 'https://axios-http.com/docs/intro' }
               ],
-              practice: 'SkillSync: integrate auth flow with frontend + backend.',
-              why: 'Understand full flow from UI → API → DB.',
+              learn: [
+                'Configuring CORS securely for browser & API',
+                'Using Axios interceptors for auth refresh flow',
+                'Managing tokens in memory vs cookies',
+                'End-to-end flow: login -> token -> protected request'
+              ],
+              practice: 'SkillSync: integrate frontend auth and protected routes.',
+              why: 'Integration tests your full stack understanding.',
               suggestedTime: '8–12 hrs',
               difficulty: 'Hard'
             }
@@ -548,8 +693,14 @@ const roadmap = {
               resources: [
                 { label: 'AWS S3 Docs', href: 'https://docs.aws.amazon.com/s3/index.html' }
               ],
-              practice: 'Build CodeTalk with file uploads, search, pagination.',
-              why: 'Real-world app with scaling considerations.',
+              learn: [
+                'Handling multipart uploads using Multer or direct S3 signed URLs',
+                'Designing pagination and search indexes',
+                'Optimistic UI updates for comments',
+                'File size limits and virus scanning considerations (basic)'
+              ],
+              practice: 'Build CodeTalk with file uploads and comment UX.',
+              why: 'Real-world app with storage and scaling considerations.',
               suggestedTime: '12–20 hrs',
               difficulty: 'Hard'
             }
@@ -567,8 +718,14 @@ const roadmap = {
                 { label: 'Nginx docs', href: 'https://nginx.org/en/docs/' },
                 { label: 'AWS EC2 Docs', href: 'https://docs.aws.amazon.com/ec2/' }
               ],
-              practice: 'Deploy one app to EC2 with Nginx; frontend to S3/CloudFront or Vercel.',
-              why: 'Production deployment knowledge is critical for interviews.',
+              learn: [
+                'Nginx reverse proxy and SSL termination',
+                'Serving React build with Nginx and proxying API',
+                'Deploying containers to EC2 using Docker Compose or ECS',
+                'Using S3 + CloudFront for static hosting'
+              ],
+              practice: 'Deploy a full-stack app: frontend to S3/CloudFront, backend to EC2 (Docker).',
+              why: 'Production deployment and infra knowledge is often asked in interviews.',
               suggestedTime: '12–18 hrs',
               difficulty: 'Hard'
             }
@@ -586,8 +743,14 @@ const roadmap = {
                 { label: 'Winston Logger', href: 'https://github.com/winstonjs/winston' },
                 { label: 'Sentry', href: 'https://sentry.io/welcome/' }
               ],
-              practice: 'Build AI Code Review Assistant; integrate logging and Sentry; generate PDF reports.',
-              why: 'Flagship showcases end-to-end system and engineering breadth.',
+              learn: [
+                'Structured logging (JSON logs) and correlation IDs',
+                'Integrating Sentry for error tracking and performance',
+                'Generating PDF reports from Node (PDFKit or Puppeteer)',
+                'Integrating OpenAI API: auth, rate-limits, prompt design basics'
+              ],
+              practice: 'Build AI Code Review Assistant, integrate logging and Sentry, generate PDF reports.',
+              why: 'Flagship project demonstrates breadth: frontend, backend, infra, monitoring, and AI usage.',
               suggestedTime: '20+ hrs',
               difficulty: 'Expert'
             }
@@ -598,133 +761,106 @@ const roadmap = {
   ]
 };
 
-// ---------- state management ----------
+// ---------- STATE ----------
 let state = null;
-
-// Try load from storage
-function loadState() {
+function loadState(){
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
     try {
       const parsed = JSON.parse(raw);
-      // basic validation
       if (parsed && parsed.months) { state = parsed; return; }
-    } catch(e) { console.warn('Invalid saved progress, ignoring'); }
+    } catch(e) { console.warn('invalid saved progress'); }
   }
-  // seed initial with completed flags = false and not expanded
+  // seed copy
   state = JSON.parse(JSON.stringify(roadmap));
-  state.months.forEach(m => { m.expanded = false; m.weeks.forEach(w=>{ w.expanded=false; w.items.forEach(i=> i.completed = false); }); });
+  state.months.forEach(m => { m.expanded=false; m.weeks.forEach(w=>{ w.expanded=false; w.items.forEach(i=> i.completed = !!i.completed); }); });
 }
-function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-// ---------- render ----------
+// ---------- RENDER ----------
 const monthsRoot = document.getElementById('monthsRoot');
 const overallPctEl = document.getElementById('overallPct');
 const progressFillEl = document.getElementById('progressFill');
 
-function computeProgress() {
+function computeProgress(){
   let total=0, done=0;
-  state.months.forEach(m => m.weeks.forEach(w => w.items.forEach(i => { total++; if (i.completed) done++; })));
+  state.months.forEach(m => m.weeks.forEach(w => w.items.forEach(i=> { total++; if (i.completed) done++; })));
   const pct = total===0 ? 0 : Math.round((done/total)*100);
   overallPctEl.textContent = pct + '%';
   progressFillEl.style.width = pct + '%';
 }
 
-function render() {
+function createAnchor(r){
+  const a = document.createElement('a');
+  a.className='resource';
+  a.textContent = r.label;
+  a.href = r.href;
+  a.target = '_blank';
+  return a;
+}
+
+function render(){
   monthsRoot.innerHTML = '';
   computeProgress();
   state.months.forEach(month => {
     const monthEl = document.createElement('section');
     monthEl.className = 'month';
-    // head
+
     const head = document.createElement('div');
     head.className = 'month-head';
-    head.innerHTML = `<div>
-        <div style="font-weight:700">${month.title}</div>
-        <div class="small" style="margin-top:4px;color:var(--muted)">${month.description}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="small">${month.weeks.length} weeks</div>
-        <div style="display:flex;gap:8px">
-          <button data-month="${month.id}" class="toggleMonth">${month.expanded ? 'Collapse' : 'Expand'}</button>
-        </div>
-      </div>`;
+    head.innerHTML = `<div><div style="font-weight:700">${month.title}</div><div class="small" style="margin-top:4px;color:var(--muted)">${month.description}</div></div>
+      <div style="display:flex;align-items:center;gap:10px"><div class="small">${month.weeks.length} weeks</div>
+      <div><button data-month="${month.id}" class="toggleMonth">${month.expanded?'Collapse':'Expand'}</button></div></div>`;
     monthEl.appendChild(head);
 
-    // body
-    if (month.expanded) {
+    if (month.expanded){
       const body = document.createElement('div');
       body.className = 'month-body';
       month.weeks.forEach(week => {
         const weekEl = document.createElement('div');
         weekEl.className = 'week';
-        weekEl.innerHTML = `<div class="week-head">
-            <div style="display:flex;gap:10px;align-items:center">
-              <div style="width:10px;height:10px;background:var(--accent);border-radius:50%"></div>
-              <div style="font-weight:600">${week.title}</div>
-            </div>
-            <div>
-              <button data-month="${month.id}" data-week="${week.id}" class="toggleWeek">${week.expanded?'Hide':'Show'}</button>
-            </div>
-          </div>`;
-        if (week.expanded) {
+        weekEl.innerHTML = `<div class="week-head"><div style="display:flex;gap:10px;align-items:center"><div style="width:10px;height:10px;background:var(--accent);border-radius:50%"></div><div style="font-weight:600">${week.title}</div></div>
+          <div><button data-month="${month.id}" data-week="${week.id}" class="toggleWeek">${week.expanded?'Hide':'Show'}</button></div></div>`;
+        if (week.expanded){
           const list = document.createElement('div');
           list.style.marginTop = '10px';
           week.items.forEach(item => {
             const topic = document.createElement('div');
             topic.className = 'topic';
+            // checkbox
             const col1 = document.createElement('div');
             const cb = document.createElement('input');
-            cb.type = 'checkbox';
-            cb.className = 'checkbox';
-            cb.checked = !!item.completed;
-            cb.addEventListener('change', () => {
-              item.completed = cb.checked;
-              saveState(); render();
-            });
+            cb.type='checkbox'; cb.className='checkbox'; cb.checked = !!item.completed;
+            cb.addEventListener('change', ()=>{ item.completed = cb.checked; saveState(); render(); });
             col1.appendChild(cb);
 
             const col2 = document.createElement('div');
-            const title = document.createElement('div');
-            title.className = 'topic-title';
-            title.textContent = item.title;
-            const meta = document.createElement('div');
-            meta.className = 'meta';
-            meta.textContent = `${item.category} • ${item.suggestedTime || ''} • ${item.difficulty || ''}`;
-            const practice = document.createElement('div');
-            practice.className = 'why';
-            practice.textContent = item.practice || '';
-            const why = document.createElement('div');
-            why.className = 'meta';
-            why.style.marginTop = '6px';
-            why.textContent = 'Why: ' + (item.why || '');
-            col2.appendChild(title);
-            col2.appendChild(meta);
-            col2.appendChild(practice);
-            col2.appendChild(why);
+            const title = document.createElement('div'); title.className='topic-title'; title.textContent = item.title;
+            const meta = document.createElement('div'); meta.className='meta'; meta.textContent = `${item.category} • ${item.suggestedTime || ''} • ${item.difficulty || ''}`;
+            const practice = document.createElement('div'); practice.className='why'; practice.textContent = item.practice || '';
+            const why = document.createElement('div'); why.className='meta'; why.style.marginTop='6px'; why.textContent = 'Why: ' + (item.why || '');
+            col2.appendChild(title); col2.appendChild(meta); col2.appendChild(practice); col2.appendChild(why);
+
+            // what to learn bullets
+            if (Array.isArray(item.learn) && item.learn.length){
+              const ul = document.createElement('ul'); ul.className='learnlist';
+              item.learn.forEach(l=>{
+                const li = document.createElement('li');
+                li.textContent = l;
+                ul.appendChild(li);
+              });
+              col2.appendChild(ul);
+            }
 
             const col3 = document.createElement('div');
-            col3.style.textAlign = 'right';
-            col3.style.display = 'flex';
-            col3.style.flexDirection = 'column';
-            col3.style.alignItems = 'flex-end';
-            col3.style.justifyContent = 'flex-start';
-            if (Array.isArray(item.resources)) {
-              const resWrap = document.createElement('div');
-              resWrap.className = 'resources';
-              item.resources.forEach(r => {
-                const a = document.createElement('a');
-                a.className = 'resource';
-                a.href = r.href;
-                a.target = '_blank';
-                a.textContent = r.label;
-                resWrap.appendChild(a);
-              });
+            col3.style.textAlign = 'right'; col3.style.display='flex'; col3.style.flexDirection='column'; col3.style.alignItems='flex-end';
+            if (Array.isArray(item.resources)){
+              const resWrap = document.createElement('div'); resWrap.className='resources';
+              item.resources.forEach(r => resWrap.appendChild(createAnchor(r)));
               col3.appendChild(resWrap);
             }
-            topic.appendChild(col1);
-            topic.appendChild(col2);
-            topic.appendChild(col3);
+
+            topic.appendChild(col1); topic.appendChild(col2); topic.appendChild(col3);
             list.appendChild(topic);
           });
           weekEl.appendChild(list);
@@ -737,30 +873,18 @@ function render() {
     monthsRoot.appendChild(monthEl);
   });
 
-  // attach toggle handlers
-  document.querySelectorAll('.toggleMonth').forEach(btn => {
-    btn.onclick = (e) => {
-      const id = btn.getAttribute('data-month');
-      const m = state.months.find(x=>x.id===id);
-      if (m) m.expanded = !m.expanded;
-      saveState(); render();
-    };
+  // attach handlers
+  document.querySelectorAll('.toggleMonth').forEach(btn=> btn.onclick = ()=>{
+    const mid = btn.getAttribute('data-month');
+    const m = state.months.find(x=>x.id===mid); if(!m) return; m.expanded = !m.expanded; saveState(); render();
   });
-  document.querySelectorAll('.toggleWeek').forEach(btn => {
-    btn.onclick = (e) => {
-      const mid = btn.getAttribute('data-month');
-      const wid = btn.getAttribute('data-week');
-      const m = state.months.find(x=>x.id===mid);
-      if (!m) return;
-      const w = m.weeks.find(x=>x.id===wid);
-      if (!w) return;
-      w.expanded = !w.expanded;
-      saveState(); render();
-    };
+  document.querySelectorAll('.toggleWeek').forEach(btn=> btn.onclick = ()=>{
+    const mid = btn.getAttribute('data-month'); const wid = btn.getAttribute('data-week');
+    const m = state.months.find(x=>x.id===mid); if(!m) return; const w = m.weeks.find(x=>x.id===wid); if(!w) return; w.expanded = !w.expanded; saveState(); render();
   });
 }
 
-// ---------- UI controls ----------
+// ---------- controls ----------
 document.getElementById('markAllComplete').addEventListener('click', ()=>{
   state.months.forEach(m=>m.weeks.forEach(w=>w.items.forEach(i=> i.completed = true)));
   saveState(); render();
@@ -772,39 +896,29 @@ document.getElementById('markAllReset').addEventListener('click', ()=>{
 });
 document.getElementById('exportBtn').addEventListener('click', ()=>{
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'ebin_progress_v2.json';
-  a.click();
-  URL.revokeObjectURL(url);
+  const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'ebin_progress_v2.json'; a.click(); URL.revokeObjectURL(url);
 });
 document.getElementById('importFile').addEventListener('change', (e)=>{
-  const f = e.target.files[0];
-  if (!f) return;
+  const f = e.target.files[0]; if (!f) return;
   const reader = new FileReader();
   reader.onload = (ev) => {
     try {
       const parsed = JSON.parse(ev.target.result);
       if (!parsed.months) throw new Error('Invalid file: missing months');
-      state = parsed;
-      saveState(); render();
-      alert('Imported progress.');
-    } catch (err) {
-      alert('Import failed: ' + err.message);
-    }
+      state = parsed; saveState(); render(); alert('Imported progress.');
+    } catch (err) { alert('Import failed: ' + err.message); }
   };
   reader.readAsText(f);
 });
 document.getElementById('resetBtn').addEventListener('click', ()=>{
-  if (!confirm('Hard reset: clear all saved progress and reload?')) return;
-  localStorage.removeItem(STORAGE_KEY);
-  location.reload();
+  if (!confirm('Hard reset: clear saved progress and reload?')) return;
+  localStorage.removeItem(STORAGE_KEY); location.reload();
 });
 
 // ---------- init ----------
 loadState();
 render();
+
 </script>
 </body>
 </html>
